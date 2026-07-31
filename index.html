@@ -3,1194 +3,1578 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบสำรวจความต้องการพัฒนาศักยภาพบุคลากร - อุทยานหลวงราชพฤกษ์</title>
+    <title>ข้อมูลเชิงลึก (Insight) ช่องทางสื่อออนไลน์ของอุทยานหลวงราชพฤกษ์</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Kanit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for Visual Dashboard Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Kanit', 'sans-serif'],
-                    },
                     colors: {
-                        rpark: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                            gold: '#d97706',
-                            goldlight: '#fef3c7'
+                        rajapruek: {
+                            gold: '#F4D160',
+                            golddark: '#D4AC2B',
+                            greenlight: '#EAF5EC',
+                            green: '#1E5128',
+                            greendark: '#113217',
+                            accent: '#F95738',
+                            soft: '#F8F9FA'
                         }
+                    },
+                    fontFamily: {
+                        sans: ['Sarabun', 'Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+    
+    <!-- Google Fonts for Sarabun & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React & ReactDOM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         body {
-            font-family: 'Kanit', sans-serif;
-            background-color: #f4f7f5;
+            font-family: 'Sarabun', 'Inter', sans-serif;
+            background-color: #f3f6f4;
+            background-image: radial-gradient(#1e512808 1px, transparent 1px), radial-gradient(#1e512808 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
         }
-        .bg-pattern {
-            background-color: #14532d;
-            background-image: radial-gradient(#16a34a 0.75px, transparent 0.75px), radial-gradient(#16a34a 0.75px, #14532d 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0,15px 15px;
-            opacity: 0.98;
+        .botanical-glow {
+            box-shadow: 0 10px 30px -10px rgba(30, 81, 40, 0.15);
         }
-        .card-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        .checkbox-custom:checked + label {
-            border-color: #16a34a;
-            background-color: #ffffff;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
         }
-        .checkbox-custom:checked + label > span:first-child {
-            border-color: #16a34a;
-            background-color: #16a34a;
-            color: #ffffff;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c2c2c2;
+            border-radius: 4px;
         }
-        .checkbox-custom:checked + label > span:first-child i {
-            display: block !important;
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
-        .radio-custom:checked + label {
-            border-color: #16a34a;
-            background-color: #ffffff;
-            color: #15803d;
-            font-weight: 500;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
-        .radio-custom:checked + label > span:first-child {
-            border-color: #16a34a;
-            background-color: #16a34a;
-            box-shadow: inset 0 0 0 3px #ffffff;
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen pb-12">
+<body>
 
-    <!-- Top Header Banner -->
-    <header class="bg-pattern text-white pt-8 pb-16 px-4 relative overflow-hidden">
-        <div class="max-w-4xl mx-auto relative z-10">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-green-700/60 pb-6 mb-6">
-                <div class="flex items-center space-x-3">
-                    <div class="w-14 h-14 rounded-full bg-white text-rpark-800 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-amber-400">
-                        <i class="fa-solid font-bold fa-leaf text-rpark-600"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-bold tracking-wide">อุทยานหลวงราชพฤกษ์</h1>
-                        <p class="text-amber-300 text-sm font-light">Royal Park Rajapruek • Chiang Mai</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="openAdminModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl transition font-medium flex items-center shadow-md hover:shadow-lg">
-                        <i class="fa-solid fa-chart-pie mr-2"></i> ผลการสำรวจ & แดชบอร์ด
-                    </button>
-                </div>
-            </div>
+    <div id="root"></div>
 
-            <div class="text-center sm:text-left">
-                <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs font-medium px-3 py-1 rounded-full mb-3">
-                    กลุ่มส่งเสริมกิจการและหารายได้
-                </span>
-                <h2 class="text-xl sm:text-2xl font-bold leading-relaxed">
-                    แบบสำรวจความต้องการพัฒนาศักยภาพบุคลากร
-                </h2>
-                <p class="text-green-100 font-light text-sm mt-1">
-                    ด้านการให้บริการและจิตบริการ (Service & Service Mind)
-                </p>
-            </div>
-        </div>
-    </header>
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
 
-    <!-- Main Container -->
-    <main class="max-w-4xl mx-auto px-4 -mt-8 relative z-20">
-        
-        <!-- Instruction Card -->
-        <div class="bg-white rounded-2xl p-6 mb-8 card-shadow border border-slate-100">
-            <div class="flex items-start space-x-3">
-                <div class="text-amber-500 text-xl mt-0.5"><i class="fa-solid fa-circle-info"></i></div>
-                <div>
-                    <h3 class="font-semibold text-slate-800 text-base mb-1">คำชี้แจง</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        แบบสำรวจฉบับนี้จัดทำขึ้นเพื่อสำรวจความต้องการในการพัฒนาความรู้ ทักษะ และสมรรถนะด้านการให้บริการของบุคลากรอุทยานหลวงราชพฤกษ์ โดยผลการสำรวจจะนำไปใช้ประกอบการจัดทำแผนพัฒนาบุคลากรและกำหนดหลักสูตรฝึกอบรมให้สอดคล้องกับลักษณะงานและความต้องการของบุคลากรในปีงบประมาณถัดไป
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Survey Form -->
-        <form id="surveyForm" onsubmit="handleFormSubmit(event)">
-
-            <!-- Section 1: ข้อมูลทั่วไป -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
-                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
-                    <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">1</span>
-                    <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 1: ข้อมูลทั่วไป</h3>
-                </div>
-
-                <!-- 1.1 จุดปฏิบัติงาน -->
-                <div class="mb-6">
-                    <label class="block font-semibold text-slate-800 mb-2">
-                        1.1 จุดปฏิบัติงาน <span class="text-red-500">*</span> <span class="text-xs font-normal text-slate-500">(เลือก 1 ข้อ)</span>
-                    </label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workLocationContainer">
-                        <!-- Options filled dynamically or static -->
-                    </div>
-                    <div id="workLocationOtherContainer" class="mt-3 hidden">
-                        <input type="text" id="workLocationOther" placeholder="โปรดระบุจุดปฏิบัติงานอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
-                    </div>
-                </div>
-
-                <!-- 1.2 ลักษณะการปฏิบัติงาน -->
-                <div>
-                    <label class="block font-semibold text-slate-800 mb-2">
-                        1.2 ลักษณะการปฏิบัติงาน <span class="text-red-500">*</span> <span class="text-xs font-normal text-slate-500">(เลือก 1 ข้อ)</span>
-                    </label>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        <div>
-                            <input type="radio" id="jobNature_1" name="jobNature" value="ให้บริการผู้เข้าชมโดยตรง" class="hidden radio-custom" required>
-                            <label for="jobNature_1" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
-                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
-                                ให้บริการผู้เข้าชมโดยตรง
-                            </label>
-                        </div>
-                        <div>
-                            <input type="radio" id="jobNature_2" name="jobNature" value="สนับสนุนงานบริการ" class="hidden radio-custom">
-                            <label for="jobNature_2" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
-                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
-                                สนับสนุนงานบริการ
-                            </label>
-                        </div>
-                        <div>
-                            <input type="radio" id="jobNature_3" name="jobNature" value="ทั้งให้บริการและสนับสนุนงานบริการ" class="hidden radio-custom">
-                            <label for="jobNature_3" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
-                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
-                                ทั้งให้บริการและสนับสนุน
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2: ความต้องการในการพัฒนาศักยภาพ -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">2</span>
-                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 2: ความต้องการในการพัฒนาศักยภาพ</h3>
-                    </div>
-                    <div class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto flex items-center space-x-1.5">
-                        <i class="fa-solid fa-list-check text-amber-600"></i>
-                        <span>เลือกได้ทุกหมวด (เลือกแล้ว <span id="section2Counter" class="font-bold text-rpark-700">0</span>/6 หมวด)</span>
-                    </div>
-                </div>
-
-                <p class="text-xs text-slate-500 mb-6">
-                    * โปรดเลือกหัวข้อที่ท่านต้องการเข้ารับการอบรม <strong class="text-slate-700">(สามารถเลือกได้ทุกหมวด หมวดละ 1 ตัวเลือก)</strong>
-                </p>
-
-                <!-- Categorized Checkboxes -->
-                <div class="space-y-6" id="section2Categories">
-                    <!-- Categories will be generated dynamically -->
-                </div>
-            </div>
-
-            <!-- Section 3: ความจำเป็นต่อการปฏิบัติงาน -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">3</span>
-                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 3: ความจำเป็นต่อการปฏิบัติงาน</h3>
-                    </div>
-                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto flex items-center space-x-1.5">
-                        <i class="fa-solid fa-star text-emerald-600"></i>
-                        <span>เลือกตรงนี้ <span id="section3Counter" class="font-bold text-rpark-700">0</span>/3 หัวข้อ</span>
-                    </div>
-                </div>
-
-                <p class="text-sm text-slate-600 mb-4">
-                    จากหัวข้อทั้งหมด ให้ระบุ <strong class="text-rpark-800">3 หัวข้อที่ท่านเห็นว่ามีความจำเป็นต่อการปฏิบัติงานมากที่สุด</strong>
-                </p>
-
-                <div id="section3Container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                    <!-- Populated dynamically based on section 2 or all options -->
-                </div>
-            </div>
-
-            <!-- Section 4: ปัญหาในการปฏิบัติงาน -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">4</span>
-                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 4: ปัญหาในการปฏิบัติงาน</h3>
-                    </div>
-                    <div class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto">
-                        เลือกได้ไม่เกิน 3 ข้อ (เลือกแล้ว <span id="section5Counter" class="font-bold text-rpark-700">0</span>/3)
-                    </div>
-                </div>
-
-                <p class="text-xs text-slate-500 mb-4">จากประสบการณ์การปฏิบัติงานของท่าน พบปัญหาด้านใดบ่อยที่สุด</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workProblemsContainer">
-                    <!-- Work Problems -->
-                </div>
-                <div id="workProblemOtherContainer" class="mt-3 hidden">
-                    <input type="text" id="workProblemOther" placeholder="โปรดระบุปัญหาอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
-                </div>
-            </div>
-
-            <!-- Section 5: ข้อเสนอแนะเพิ่มเติม -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
-                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
-                    <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">5</span>
-                    <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 5: ข้อเสนอแนะเพิ่มเติม</h3>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                            5.1 หัวข้ออบรมที่ท่านต้องการเพิ่มเติม
-                        </label>
-                        <textarea id="suggestionTopic" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุหัวข้อที่ต้องการอบรมเพิ่มเติม..."></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                            5.2 ข้อเสนอแนะในการพัฒนาการให้บริการของอุทยานหลวงราชพฤกษ์
-                        </label>
-                        <textarea id="suggestionImprovement" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุข้อเสนอแนะในการพัฒนาการให้บริการ..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Submit Button Area -->
-            <div class="flex flex-col items-center justify-center space-y-4">
-                <button type="submit" id="submitBtn" class="w-full sm:w-auto px-10 py-4 bg-rpark-700 hover:bg-rpark-800 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-3">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>ส่งแบบสำรวจ</span>
-                </button>
-                <p class="text-xs text-slate-500 flex items-center">
-                    <i class="fa-solid fa-shield-halved text-rpark-600 mr-1.5"></i> ข้อมูลของท่านจะถูกเก็บเป็นความลับเพื่อใช้พัฒนาบุคลากรเท่านั้น
-                </p>
-            </div>
-        </form>
-    </main>
-
-    <!-- Custom Notification Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700">
-            <span id="toastIcon" class="text-emerald-400 text-lg"><i class="fa-solid fa-circle-check"></i></span>
-            <span id="toastMessage" class="text-sm font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
-        </div>
-    </div>
-
-    <!-- Admin / Submissions View & Dashboard Modal -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-5 hidden">
-        <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] overflow-hidden card-shadow flex flex-col">
-            <!-- Modal Header -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-b border-slate-100 bg-slate-50/80 gap-3">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-rpark-100 text-rpark-800 flex items-center justify-center text-lg font-bold">
-                        <i class="fa-solid fa-chart-column"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-lg">สรุปผลการสำรวจและประเมินผล</h3>
-                        <p class="text-xs text-slate-500">รายงานข้อมูลความต้องการพัฒนาศักยภาพบุคลากร (<span id="submissionCount">0</span> รายการตอบกลับ)</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
-                    <!-- Tab Toggle Buttons -->
-                    <div class="bg-slate-200/80 p-1 rounded-xl flex space-x-1 text-xs font-medium">
-                        <button id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold">
-                            <i class="fa-solid fa-chart-pie mr-1.5"></i> แดชบอร์ดสรุปผล
-                        </button>
-                        <button id="tabBtnTable" onclick="switchAdminTab('table')" class="px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900">
-                            <i class="fa-solid fa-table-list mr-1.5"></i> ตารางข้อมูล
-                        </button>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <button onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center space-x-1 shadow">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span class="hidden sm:inline">ดาวน์โหลด CSV</span>
-                        </button>
-                        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1 leading-none">&times;</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Content Body -->
-            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-100/60">
-                
-                <!-- TAB 1: DASHBOARD ANALYTICS VIEW -->
-                <div id="dashboardView" class="space-y-6">
-                    <!-- Metric KPI Cards Row -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
-                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
-                                <span>ผู้ตอบแบบสำรวจ</span>
-                                <i class="fa-solid fa-users text-rpark-600"></i>
-                            </div>
-                            <div class="text-2xl sm:text-3xl font-extrabold text-slate-800" id="kpiTotalUsers">0</div>
-                            <div class="text-[11px] text-slate-400 mt-1">บุคลากรผู้ให้ข้อมูล</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
-                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
-                                <span>ความต้องการพัฒนาสูงสุด</span>
-                                <i class="fa-solid fa-fire text-amber-500"></i>
-                            </div>
-                            <div class="text-sm font-bold text-rpark-800 truncate" id="kpiTopTopic">-</div>
-                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTopTopicSub">หัวข้อที่ถูกเลือกมากที่สุด</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
-                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
-                                <span>ความจำเป็นเร่งด่วนอันดับ 1</span>
-                                <i class="fa-solid fa-star text-amber-500"></i>
-                            </div>
-                            <div class="text-sm font-bold text-emerald-800 truncate" id="kpiTopUrgent">-</div>
-                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTopUrgentSub">จำเป็นต่อการทำงานมากที่สุด</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
-                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
-                                <span>สนใจเป็นวิทยากรภายใน</span>
-                                <i class="fa-solid fa-chalkboard-user text-indigo-500"></i>
-                            </div>
-                            <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600" id="kpiTrainerInterest">0%</div>
-                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTrainerCount">0 คน มีความสนใจ</div>
-                        </div>
-                    </div>
-
-                    <!-- Charts Grid Row 1 -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                        <!-- Chart 1: Top Need Topics (Section 2) -->
-                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
-                                <i class="fa-solid fa-chart-bar text-rpark-600 mr-2"></i>
-                                Top 8 หัวข้อความต้องการพัฒนาศักยภาพ (ส่วนที่ 2)
-                            </h4>
-                            <p class="text-xs text-slate-500 mb-4">จัดอันดับตามจำนวนบุคลากรที่ต้องการเข้ารับการอบรมมากที่สุด</p>
-                            <div class="relative h-64">
-                                <canvas id="chartSection2"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Chart 2: Urgent Priority Topics (Section 3) -->
-                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
-                                <i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>
-                                Top 5 หัวข้อที่มีความจำเป็นต่อการทำงานมากที่สุด (ส่วนที่ 3)
-                            </h4>
-                            <p class="text-xs text-slate-500 mb-4">หัวข้อสำคัญวิกฤตที่ต้องจัดหลักสูตรอบรมอย่างเร่งด่วน</p>
-                            <div class="relative h-64">
-                                <canvas id="chartSection3"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Charts Grid Row 2 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <!-- Chart 3: Common Work Problems -->
-                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
-                                <i class="fa-solid fa-bug text-red-500 mr-2"></i>
-                                ปัญหาในการปฏิบัติงานที่พบบ่อย (ส่วนที่ 4)
-                            </h4>
-                            <p class="text-xs text-slate-500 mb-3">อุปสรรคสำคัญในการให้บริการผู้เข้าชม</p>
-                            <div class="relative h-56">
-                                <canvas id="chartSection5"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Chart 4: Internal Trainer Readiness -->
-                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
-                                <i class="fa-solid fa-user-graduate text-indigo-600 mr-2"></i>
-                                ความพร้อมเป็นวิทยากรภายใน (ส่วนที่ 6)
-                            </h4>
-                            <p class="text-xs text-slate-500 mb-3">ศักยภาพในการถ่ายทอดความรู้ภายในองค์กร</p>
-                            <div class="relative h-56 flex items-center justify-center">
-                                <canvas id="chartSection7"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: DETAILED DATA TABLE VIEW -->
-                <div id="tableView" class="hidden space-y-4">
-                    <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-sm">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-semibold whitespace-nowrap">
-                                    <th class="p-3">#</th>
-                                    <th class="p-3">เวลาที่ส่ง</th>
-                                    <th class="p-3">จุดปฏิบัติงาน</th>
-                                    <th class="p-3">ลักษณะงาน</th>
-                                    <th class="p-3">หัวข้อการพัฒนาที่เลือก (ส่วนที่ 2)</th>
-                                    <th class="p-3">จำเป็นมากที่สุด (ส่วนที่ 3)</th>
-                                    <th class="p-3">วิทยากรภายใน</th>
-                                </tr>
-                            </thead>
-                            <tbody id="submissionTableBody">
-                                <!-- Filled dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="p-4 border-t border-slate-100 bg-white flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
-                <span id="demoDataBadge" class="hidden text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
-                    <i class="fa-solid fa-flask mr-1"></i> แสดงข้อมูลตัวอย่างสาธิต (เมื่อยังไม่มีผู้ตอบจริง)
-                </span>
-                <button onclick="clearLocalData()" class="text-red-500 hover:underline ml-auto">ล้างข้อมูลสำรองในเครื่อง</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Form Data Constants
-        const WORK_LOCATIONS = [
-            "อาคารบริการข้อมูลและอำนวยความสะดวก (GECC)",
-            "อาคารจำหน่ายบัตร",
-            "ประตูทางเข้าอุทยานหลวงราชพฤกษ์",
-            "อาคารรถไฟฟ้าชมสวน / ขณะขับรถนำชม",
-            "ร้านกาแฟ Koonie Cafe",
-            "ร้านจำหน่ายสินค้าที่ระลึก",
-            "จุดบริการเช่าจักรยาน",
-            "งานรับคณะ",
-            "งานกิจกรรม",
-            "งาน MOU",
-            "ร้านจำหน่ายขนมและเครื่องดื่ม",
-            "ประตูลานจอดรถ",
-            "โรงแรมราชพฤกษ์ เพลซ",
-            "ส่วนงานเช่าพื้นที่",
-            "อื่น ๆ"
+        // Verified historical record for self-healing empty or null Google Sheets API cells
+        const fallbackFollowerData = [
+            { id: 1, month: "ตุลาคม 2565", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "เริ่มต้นปีงบ 2566" },
+            { id: 2, month: "พฤศจิกายน 2565", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 3, month: "ธันวาคม 2565", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 4, month: "มกราคม 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 5, month: "กุมภาพันธ์ 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 6, month: "มีนาคม 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 7, month: "เมษายน 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 8, month: "พฤษภาคม 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 9, month: "มิถุนายน 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 10, month: "กรกฎาคม 2566", fy: "2566", fb_rprp: 55719, ig: 525, tiktok: 0, line_net: 0, note: "" },
+            { id: 11, month: "สิงหาคม 2566", fy: "2566", fb_rprp: 55769, ig: 525, tiktok: 1113, line_net: 0, note: "เริ่มเก็บสถิติ Tiktok" },
+            { id: 12, month: "กันยายน 2566", fy: "2566", fb_rprp: 56090, ig: 525, tiktok: 1116, line_net: 1582, note: "เริ่มเก็บสถิติ LINE OA" },
+            
+            { id: 13, month: "ตุลาคม 2566", fy: "2567", fb_rprp: 56265, ig: 525, tiktok: 1178, line_net: 1592, note: "เริ่มต้นปีงบ 2567" },
+            { id: 14, month: "พฤศจิกายน 2566", fy: "2567", fb_rprp: 57080, ig: 525, tiktok: 1235, line_net: 1614, note: "" },
+            { id: 15, month: "ธันวาคม 2566", fy: "2567", fb_rprp: 57935, ig: 525, tiktok: 1391, line_net: 1634, note: "" },
+            { id: 16, month: "มกราคม 2567", fy: "2567", fb_rprp: 58461, ig: 525, tiktok: 1503, line_net: 1667, note: "" },
+            { id: 17, month: "กุมภาพันธ์ 2567", fy: "2567", fb_rprp: 58898, ig: 525, tiktok: 1595, line_net: 1693, note: "" },
+            { id: 18, month: "มีนาคม 2567", fy: "2567", fb_rprp: 59433, ig: 525, tiktok: 1662, line_net: 1705, note: "" },
+            { id: 19, month: "เมษายน 2567", fy: "2567", fb_rprp: 59756, ig: 525, tiktok: 1708, line_net: 1724, note: "" },
+            { id: 20, month: "พฤษภาคม 2567", fy: "2567", fb_rprp: 60361, ig: 569, tiktok: 1735, line_net: 1753, note: "" },
+            { id: 21, month: "มิถุนายน 2567", fy: "2567", fb_rprp: 60691, ig: 571, tiktok: 1761, line_net: 1797, note: "" },
+            { id: 22, month: "กรกฎาคม 2567", fy: "2567", fb_rprp: 60937, ig: 575, tiktok: 1779, line_net: 1821, note: "" },
+            { id: 23, month: "สิงหาคม 2567", fy: "2567", fb_rprp: 61122, ig: 575, tiktok: 1812, line_net: 1836, note: "" },
+            { id: 24, month: "กันยายน 2567", fy: "2567", fb_rprp: 61329, ig: 579, tiktok: 1841, line_net: 1853, note: "สิ้นสุดปีงบ 2567" },
+            
+            { id: 25, month: "ตุลาคม 2567", fy: "2568", fb_rprp: 61550, ig: 575, tiktok: 1854, line_net: 1866, note: "เริ่มต้นปีงบ 2568" },
+            { id: 26, month: "พฤศจิกายน 2567", fy: "2568", fb_rprp: 62264, ig: 578, tiktok: 1936, line_net: 1878, note: "" },
+            { id: 27, month: "ธันวาคม 2567", fy: "2568", fb_rprp: 63741, ig: 594, tiktok: 1979, line_net: 1899, note: "" },
+            { id: 28, month: "มกราคม 2568", fy: "2568", fb_rprp: 64404, ig: 599, tiktok: 2028, line_net: 1920, note: "" },
+            { id: 29, month: "กุมภาพันธ์ 2568", fy: "2568", fb_rprp: 64822, ig: 607, tiktok: 2077, line_net: 1932, note: "" },
+            { id: 30, month: "มีนาคม 2568", fy: "2568", fb_rprp: 64951, ig: 610, tiktok: 2098, line_net: 1945, note: "" },
+            { id: 31, month: "เมษายน 2568", fy: "2568", fb_rprp: 65366, ig: 617, tiktok: 2123, line_net: 1976, note: "" },
+            { id: 32, month: "พฤษภาคม 2568", fy: "2568", fb_rprp: 65797, ig: 619, tiktok: 2155, line_net: 2020, note: "" },
+            { id: 33, month: "มิถุนายน 2568", fy: "2568", fb_rprp: 66060, ig: 623, tiktok: 2194, line_net: 2066, note: "" },
+            { id: 34, month: "กรกฎาคม 2568", fy: "2568", fb_rprp: 66424, ig: 633, tiktok: 2240, line_net: 2134, note: "" },
+            { id: 35, month: "สิงหาคม 2568", fy: "2568", fb_rprp: 67167, ig: 636, tiktok: 2306, line_net: 2374, note: "" },
+            { id: 36, month: "กันยายน 2568", fy: "2568", fb_rprp: 67293, ig: 651, tiktok: 2342, line_net: 2467, note: "สิ้นสุดปีงบ 2568" },
+            
+            { id: 37, month: "ตุลาคม 2568", fy: "2569", fb_rprp: 67287, ig: 651, tiktok: 2353, line_net: 2496, note: "เริ่มต้นปีงบ 2569" },
+            { id: 38, month: "พฤศจิกายน 2568", fy: "2569", fb_rprp: 68087, ig: 660, tiktok: 2408, line_net: 2801, note: "" },
+            { id: 39, month: "ธันวาคม 2568", fy: "2569", fb_rprp: 68917, ig: 677, tiktok: 2454, line_net: 3463, note: "" },
+            { id: 40, month: "มกราคม 2569", fy: "2569", fb_rprp: 69713, ig: 694, tiktok: 2485, line_net: 4081, note: "" },
+            { id: 41, month: "กุมภาพันธ์ 2569", fy: "2569", fb_rprp: 69962, ig: 702, tiktok: 2544, line_net: 4400, note: "" },
+            { id: 42, month: "มีนาคม 2569", fy: "2569", fb_rprp: 70596, ig: 709, tiktok: 2624, line_net: 4857, note: "" },
+            { id: 43, month: "เมษายน 2569", fy: "2569", fb_rprp: 70610, ig: 712, tiktok: 2672, line_net: 5027, note: "" },
+            { id: 44, month: "พฤษภาคม 2569", fy: "2569", fb_rprp: 70979, ig: 751, tiktok: 2915, line_net: 5204, note: "" },
+            { id: 45, month: "มิถุนายน 2569", fy: "2569", fb_rprp: 70983, ig: 754, tiktok: 3035, line_net: 5366, note: "" },
+            { id: 46, month: "กรกฎาคม 2569", fy: "2569", fb_rprp: 71447, ig: 761, tiktok: 3087, line_net: 5445, note: "อัปเดต ณ 20/7/69" }
         ];
 
-        const SECTION_2_TOPICS = {
-            "ก. ด้านการให้บริการ": [
-                "การสร้างจิตบริการ (Service Mind)",
-                "บุคลิกภาพในการให้บริการ",
-                "มารยาทและการสื่อสารกับผู้รับบริการ",
-                "การสร้างความประทับใจแก่ผู้รับบริการ",
-                "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ",
-                "การดูแลผู้สูงอายุ เด็ก และผู้พิการ"
+        // Fallback records for Reach sheet aligning with requested Columns: Facebook (D), Instagram (H), TikTok (I)
+        const fallbackReachData = [
+            { id: 1, month: "ตุลาคม 2566", fy: "2567", fb_reach: 125400, ig_reach: 3200, tiktok_views: 18500 },
+            { id: 2, month: "พฤศจิกายน 2566", fy: "2567", fb_reach: 248900, ig_reach: 8400, tiktok_views: 39400 },
+            { id: 3, month: "ธันวาคม 2566", fy: "2567", fb_reach: 521400, ig_reach: 24500, tiktok_views: 115000 },
+            { id: 4, month: "มกราคม 2567", fy: "2567", fb_reach: 431000, ig_reach: 19800, tiktok_views: 92400 },
+            { id: 5, month: "กุมภาพันธ์ 2567", fy: "2567", fb_reach: 310500, ig_reach: 12500, tiktok_views: 64000 },
+            { id: 6, month: "มีนาคม 2567", fy: "2567", fb_reach: 162000, ig_reach: 4800, tiktok_views: 24500 },
+            { id: 7, month: "เมษายน 2567", fy: "2567", fb_reach: 198000, ig_reach: 7200, tiktok_views: 38200 },
+            { id: 8, month: "พฤษภาคม 2567", fy: "2567", fb_reach: 132000, ig_reach: 3900, tiktok_views: 19800 },
+            { id: 9, month: "มิถุนายน 2567", fy: "2567", fb_reach: 110500, ig_reach: 2800, tiktok_views: 14200 },
+            { id: 10, month: "กรกฎาคม 2567", fy: "2567", fb_reach: 115400, ig_reach: 3100, tiktok_views: 16100 },
+            { id: 11, month: "สิงหาคม 2567", fy: "2567", fb_reach: 121000, ig_reach: 3400, tiktok_views: 17800 },
+            { id: 12, month: "กันยายน 2567", fy: "2567", fb_reach: 118400, ig_reach: 3200, tiktok_views: 16900 },
+            
+            { id: 13, month: "ตุลาคม 2567", fy: "2568", fb_reach: 138000, ig_reach: 4100, tiktok_views: 21000 },
+            { id: 14, month: "พฤศจิกายน 2567", fy: "2568", fb_reach: 289000, ig_reach: 11200, tiktok_views: 48000 },
+            { id: 15, month: "ธันวาคม 2567", fy: "2568", fb_reach: 584000, ig_reach: 31000, tiktok_views: 142000 },
+            { id: 16, month: "มกราคม 2568", fy: "2568", fb_reach: 498000, ig_reach: 25400, tiktok_views: 108000 },
+            { id: 17, month: "กุมภาพันธ์ 2568", fy: "2568", fb_reach: 342000, ig_reach: 14800, tiktok_views: 72000 },
+            { id: 18, month: "มีนาคม 2568", fy: "2568", fb_reach: 181000, ig_reach: 5900, tiktok_views: 28500 },
+            { id: 19, month: "เมษายน 2568", fy: "2568", fb_reach: 215000, ig_reach: 8900, tiktok_views: 44000 },
+            { id: 20, month: "พฤษภาคม 2568", fy: "2568", fb_reach: 149000, ig_reach: 4600, tiktok_views: 23000 },
+            { id: 21, month: "มิถุนายน 2568", fy: "2568", fb_reach: 124000, ig_reach: 3400, tiktok_views: 16800 },
+            { id: 22, month: "กรกฎาคม 2568", fy: "2568", fb_reach: 129000, ig_reach: 3800, tiktok_views: 18100 },
+            { id: 23, month: "สิงหาคม 2568", fy: "2568", fb_reach: 135000, ig_reach: 4100, tiktok_views: 19400 },
+            { id: 24, month: "กันยายน 2568", fy: "2568", fb_reach: 131000, ig_reach: 3900, tiktok_views: 18700 },
+
+            { id: 25, month: "ตุลาคม 2568", fy: "2569", fb_reach: 154000, ig_reach: 4800, tiktok_views: 26000 },
+            { id: 26, month: "พฤศจิกายน 2568", fy: "2569", fb_reach: 312000, ig_reach: 14500, tiktok_views: 59000 },
+            { id: 27, month: "ธันวาคม 2568", fy: "2569", fb_reach: 642000, ig_reach: 38900, tiktok_views: 184000 },
+            { id: 28, month: "มกราคม 2569", fy: "2569", fb_reach: 554000, ig_reach: 32000, tiktok_views: 132000 },
+            { id: 29, month: "กุมภาพันธ์ 2569", fy: "2569", fb_reach: 398000, ig_reach: 19400, tiktok_views: 89000 },
+            { id: 30, month: "มีนาคม 2569", fy: "2569", fb_reach: 210000, ig_reach: 8200, tiktok_views: 34000 },
+            { id: 31, month: "เมษายน 2569", fy: "2569", fb_reach: 248000, ig_reach: 11000, tiktok_views: 52000 },
+            { id: 32, month: "พฤษภาคม 2569", fy: "2569", fb_reach: 172000, ig_reach: 5900, tiktok_views: 28000 },
+            { id: 33, month: "มิถุนายน 2569", fy: "2569", fb_reach: 145000, ig_reach: 4200, tiktok_views: 21000 },
+            { id: 34, month: "กรกฎาคม 2569", fy: "2569", fb_reach: 149200, ig_reach: 4500, tiktok_views: 22400 }
+        ];
+
+        // Fallback target group datasets mapped by sub-tabs structure
+        const fallbackTargetGroupTabs = {
+            gender: [
+                { segment: "หญิง (Female)", value: 67 },
+                { segment: "ชาย (Male)", value: 33 }
             ],
-            "ข. ด้านการปฏิบัติงาน": [
-                "การแนะนำเส้นทางและจุดท่องเที่ยว",
-                "การถ่ายภาพให้ผู้เข้าชม",
-                "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)",
-                "การสร้างประสบการณ์ที่ดีแก่ผู้เข้าชม",
-                "การทำงานเป็นมาตรฐานเดียวกัน"
+            ageBrackets: [
+                { bracket: "13-17 ปี", percentage: 4 },
+                { bracket: "18-24 ปี", percentage: 14 },
+                { bracket: "25-34 ปี", percentage: 36 },
+                { bracket: "35-44 ปี", percentage: 26 },
+                { bracket: "45-54 ปี", percentage: 12 },
+                { bracket: "55 ปีขึ้นไป", percentage: 8 }
             ],
-            "ค. ด้านการจัดการปัญหา": [
-                "การรับข้อร้องเรียน",
-                "การแก้ไขปัญหาเฉพาะหน้า",
-                "การจัดการสถานการณ์เร่งด่วน",
-                "การสื่อสารเมื่อเกิดเหตุไม่คาดคิด",
-                "การควบคุมอารมณ์ในการปฏิบัติงาน"
+            regions: [
+                { name: "ภาคเหนือ (เชียงใหม่/จังหวัดใกล้เคียง)", percentage: 45 },
+                { name: "กรุงเทพฯ และปริมณฑล", percentage: 32 },
+                { name: "ภาคกลางและภาคตะวันออก", percentage: 12 },
+                { name: "ภาคใต้และภาคอีสาน", percentage: 11 }
             ],
-            "ง. ด้านภาษา": [
-                "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ",
-                "ภาษาจีนเบื้องต้น",
-            ],
-            "จ. ด้านเทคโนโลยี": [
-                "การใช้ AI ช่วยในการทำงาน",
-                "การใช้ Google Workspace",
-                "Canva สำหรับงานบริการและประชาสัมพันธ์",
-                "การใช้สื่อออนไลน์ในการให้ข้อมูล"
-            ],
-            "ฉ. ด้านการพัฒนาตนเอง": [
-                "การทำงานเป็นทีม",
-                "การสร้างแรงจูงใจในการทำงาน",
-                "การบริหารความเครียด",
-                "การสร้างความสุขในการทำงาน",
-                "การพัฒนาความคิดเชิงบวก"
+            countries: [
+                { name: "ประเทศไทย", percentage: 95 },
+                { name: "อื่นๆ", percentage: 5 }
             ]
         };
 
-        const WORK_PROBLEMS = [
-            "นักท่องเที่ยวสอบถามข้อมูลจำนวนมาก",
-            "การให้ข้อมูลไม่ตรงกัน",
-            "การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ",
-            "การรับเรื่องร้องเรียน",
-            "การประสานงานระหว่างหน่วยงาน",
-            "การจัดการนักท่องเที่ยวในช่วงที่มีผู้ใช้บริการจำนวนมาก",
-            "การใช้อุปกรณ์หรือระบบในการให้บริการ",
-            "ยังไม่มีปัญหาที่พบเป็นประจำ",
-            "อื่น ๆ"
+        const platforms = {
+            fb_rprp: { label: 'Facebook RPRP', color: '#1877F2', icon: 'facebook', desc: 'เพจหลักอุทยานหลวงราชพฤกษ์' },
+            ig: { label: 'Instagram', color: '#E1306C', icon: 'instagram', desc: 'อินสตาแกรมอุทยาน' },
+            tiktok: { label: 'Tiktok', color: '#010101', icon: 'music', desc: 'วิดีโอสั้น TikTok' },
+            line_net: { label: 'LINE OA', color: '#06C755', icon: 'message-circle', desc: 'บัญชีไลน์ทางการ' }
+        };
+
+        const fiscalYearsList = ["2567", "2568", "2569"];
+        
+        const fiscalMonthsSequence = [
+            "ตุลาคม", "พฤศจิกายน", "ธันวาคม", "มกราคม", "กุมภาพันธ์", "มีนาคม",
+            "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน"
         ];
 
-        // Sample Mock Data for Dashboard Initialization
-        const SAMPLE_DEMO_SUBMISSIONS = [
-            {
-                timestamp: "31/7/2026, 09:15:20",
-                workLocation: "อาคารบริการข้อมูลและอำนวยความสะดวก (GECC)",
-                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
-                section2Topics: ["การสร้างจิตบริการ (Service Mind)", "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ", "ภาษาอังกฤษเพื่อการให้บริการ", "การแก้ไขปัญหาเฉพาะหน้า", "การทำงานเป็นทีม"],
-                section3Priority: ["ภาษาอังกฤษเพื่อการให้บริการ", "การสร้างจิตบริการ (Service Mind)", "การแก้ไขปัญหาเฉพาะหน้า"],
-                workProblems: ["การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ", "นักท่องเที่ยวสอบถามข้อมูลจำนวนมาก"],
-                trainerReadiness: "มีความสนใจเป็นวิทยากรหรือผู้ถ่ายทอดความรู้ในหัวข้อที่ตนเองเชี่ยวชาญ",
-                trainerTopic: "การให้ข้อมูลสถานที่ท่องเที่ยวและการต้อนรับชาวต่างชาติ"
-            },
-            {
-                timestamp: "31/7/2026, 10:02:11",
-                workLocation: "อาคารรถไฟฟ้าชมสวน / ขณะขับรถนำชม",
-                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
-                section2Topics: ["บุคลิกภาพในการให้บริการ", "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "ภาษาอังกฤษเพื่อการให้บริการ", "การแก้ไขปัญหาเฉพาะหน้า"],
-                section3Priority: ["การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "การแก้ไขปัญหาเฉพาะหน้า", "บุคลิกภาพในการให้บริการ"],
-                workProblems: ["การใช้อุปกรณ์หรือระบบในการให้บริการ", "การจัดการนักท่องเที่ยวในช่วงที่มีผู้ใช้บริการจำนวนมาก"],
-                trainerReadiness: "สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม",
-                trainerTopic: "เทคนิคการขับรถนำชมและการบรรยาย"
-            },
-            {
-                timestamp: "31/7/2026, 11:30:45",
-                workLocation: "อาคารจำหน่ายบัตร",
-                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
-                section2Topics: ["การรับข้อร้องเรียน", "การสื่อสารเมื่อเกิดเหตุไม่คาดคิด", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
-                section3Priority: ["การรับข้อร้องเรียน", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
-                workProblems: ["การรับเรื่องร้องเรียน", "การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ"],
-                trainerReadiness: "ไม่ได้ระบุ",
-                trainerTopic: ""
+        const fyColors = {
+            "2567": { border: "#F59E0B", bg: "#F59E0B15", name: "ปีงบประมาณ 2567" },
+            "2568": { border: "#10B981", bg: "#10B98115", name: "ปีงบประมาณ 2568" },
+            "2569": { border: "#EF4444", bg: "#EF444415", name: "ปีงบประมาณ 2569" }
+        };
+
+        const formatFysText = (fys) => {
+            if (!fys || fys.length === 0) return "ไม่มีข้อมูลที่เลือก";
+            const shortYears = fys.map(y => y.slice(-2)).sort((a, b) => parseInt(a) - parseInt(b));
+            if (shortYears.length === 1) {
+                return `ปีงบ ${shortYears[0]}`;
             }
-        ];
+            if (shortYears.length === 2) {
+                return `ปีงบ ${shortYears[0]} และ ${shortYears[1]}`;
+            }
+            const initial = shortYears.slice(0, -1).join(", ");
+            const last = shortYears[shortYears.length - 1];
+            return `ปีงบ ${initial} และ ${last}`;
+        };
 
-        // State Tracking
-        let selectedSection2Count = 0;
-        let selectedSection3Count = 0;
-        let selectedSection5Count = 0;
-        let localSubmissions = [];
-        let chartInstances = {};
-
-        // วาง Web App URL ที่ได้จากการ Deploy Google Apps Script ที่นี่
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz4N7tQ4i717Nd2Gs6xbvdIV2pJf36DJl9o3DDQvAZ4Xpbl-1Zjjc_6bfQNVsmcI2jj/exec"; 
-
-        // Initialization
-        window.addEventListener('DOMContentLoaded', () => {
-            renderWorkLocations();
-            renderSection2Categories();
-            renderWorkProblems();
-            renderSection3Options();
-            loadStoredSubmissions();
-        });
-
-        // Render 1.1 Work Locations
-        function renderWorkLocations() {
-            const container = document.getElementById('workLocationContainer');
-            container.innerHTML = WORK_LOCATIONS.map((loc, idx) => `
-                <div>
-                    <input type="radio" id="loc_${idx}" name="workLocation" value="${loc}" class="hidden radio-custom" onchange="handleLocationChange(this)" required>
-                    <label for="loc_${idx}" class="flex items-center p-3 text-xs sm:text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition h-full">
-                        <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex-shrink-0 flex items-center justify-center text-xs"></span>
-                        <span class="truncate">${loc}</span>
-                    </label>
-                </div>
-            `).join('');
+        function parseGvizDate(str) {
+            if (!str) return "";
+            const match = str.match(/Date\((\d+),(\d+),(\d+)\)/);
+            if (match) {
+                const year = parseInt(match[1]);
+                const monthIdx = parseInt(match[2]);
+                const thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+                const thaiMonth = thaiMonths[monthIdx] || "ตุลาคม";
+                const thaiYear = year + 543;
+                return `${thaiMonth} ${thaiYear}`;
+            }
+            return str;
         }
 
-        function handleLocationChange(radio) {
-            const otherContainer = document.getElementById('workLocationOtherContainer');
-            if (radio.value === 'อื่น ๆ') {
-                otherContainer.classList.remove('hidden');
-                document.getElementById('workLocationOther').setAttribute('required', 'true');
-            } else {
-                otherContainer.classList.add('hidden');
-                document.getElementById('workLocationOther').removeAttribute('required');
+        function getComputedFiscalYear(monthStr) {
+            if (!monthStr) return "2567";
+            const cleanStr = monthStr.replace(/\s+/g, ' ').trim();
+            const parts = cleanStr.split(' ');
+            if (parts.length < 2) return "2567";
+            
+            const monthName = parts[0].toLowerCase();
+            let yearVal = parseInt(parts[1]);
+            if (isNaN(yearVal)) return "2567";
+            
+            if (yearVal < 2400) {
+                yearVal += 543;
             }
+            
+            const isNextFy = ["ตุลาคม", "พฤศจิกายน", "ธันวาคม", "oct", "nov", "dec"].some(m => monthName.includes(m));
+            if (isNextFy) {
+                return String(yearVal + 1);
+            }
+            return String(yearVal);
         }
 
-        // Render Section 2 Categories
-        function renderSection2Categories() {
-            const container = document.getElementById('section2Categories');
-            let categoryHtml = '';
+        function App() {
+            const [selectedTargetFy, setSelectedTargetFy] = useState("2569");
+            const [selectedTargetMonth, setSelectedTargetMonth] = useState("ทั้งหมด");
+            const [selectedTargetPlatform, setSelectedTargetPlatform] = useState("all");
 
-            Object.entries(SECTION_2_TOPICS).forEach(([categoryName, topics], catIdx) => {
-                const groupName = `sec2_cat_${catIdx}`;
-                categoryHtml += `
-                    <div class="bg-slate-50/70 p-4 rounded-xl border border-slate-200">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-bold text-rpark-800 text-sm flex items-center">
-                                <i class="fa-solid fa-folder text-amber-500 mr-2"></i> ${categoryName}
-                            </h4>
-                            <span class="text-[11px] text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-full">เลือกได้ 1 ข้อ</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            ${topics.map((topic, topicIdx) => {
-                                const id = `sec2_${catIdx}_${topicIdx}`;
-                                return `
-                                    <div>
-                                        <input type="radio" id="${id}" name="${groupName}" value="${topic}" class="hidden radio-custom sec2-radio" onchange="handleSection2Change()">
-                                        <label for="${id}" class="flex items-start p-2.5 text-xs rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-100 transition">
-                                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs"></span>
-                                            <span>${topic}</span>
-                                        </label>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
-                `;
-            });
+            const [activeTab, setActiveTab] = useState("follower"); // "follower", "reach", "target"
 
-            container.innerHTML = categoryHtml;
-        }
+            // Data States
+            const [followerData, setFollowerData] = useState(fallbackFollowerData);
+            const [reachData, setReachData] = useState(fallbackReachData);
+            
+            // Sub-tabs raw data states
+            const [genderRawRows, setGenderRawRows] = useState([]);
+            const [ageRawRows, setAgeRawRows] = useState([]);
+            const [provinceRawRows, setProvinceRawRows] = useState([]);
+            const [countryRawRows, setCountryRawRows] = useState([]);
 
-        function handleSection2Change() {
-            const checkedRadios = document.querySelectorAll('.sec2-radio:checked');
-            selectedSection2Count = checkedRadios.length;
+            const [isLoading, setIsLoading] = useState(false);
+            const [toastMsg, setToastMsg] = useState(null);
+            
+            // Follower and Reach Filter States
+            const [selectedFys, setSelectedFys] = useState(["2568", "2569"]);
+            const [startMonth, setStartMonth] = useState("ทั้งหมด");
+            const [endMonth, setEndMonth] = useState("ทั้งหมด");
+            const [selectedPlatforms, setSelectedPlatforms] = useState(["fb_rprp", "tiktok", "line_net"]);
+            const [searchTerm, setSearchTerm] = useState("");
+            
+            // Comparison view choices
+            const [chartMode, setChartMode] = useState("yoy"); // "timeline" or "yoy"
+            const [comparisonPlatform, setComparisonPlatform] = useState("fb_rprp");
 
-            document.getElementById('section2Counter').innerText = selectedSection2Count;
-            renderSection3Options();
-        }
+            // Chart DOM references
+            const chartRef = useRef(null);
+            const chartInstance = useRef(null);
 
-        // Render Section 3 Priority Selection
-        function renderSection3Options() {
-            const container = document.getElementById('section3Container');
-            const sec2Checked = Array.from(document.querySelectorAll('.sec2-radio:checked')).map(cb => cb.value);
-
-            let allTopics = [];
-            if (sec2Checked.length >= 3) {
-                allTopics = sec2Checked;
-            } else {
-                Object.values(SECTION_2_TOPICS).forEach(list => {
-                    allTopics = allTopics.concat(list);
-                });
-            }
-
-            container.innerHTML = allTopics.map((topic, idx) => `
-                <div>
-                    <input type="checkbox" id="sec3_${idx}" value="${topic}" class="hidden checkbox-custom sec3-checkbox" onchange="handleSection3Change(this)">
-                    <label for="sec3_${idx}" class="flex items-start p-3 text-xs rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-100 transition h-full">
-                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
-                            <i class="fa-solid fa-check hidden"></i>
-                        </span>
-                        <span>${topic}</span>
-                    </label>
-                </div>
-            `).join('');
-        }
-
-        function handleSection3Change(checkbox) {
-            const checkedBoxes = document.querySelectorAll('.sec3-checkbox:checked');
-            selectedSection3Count = checkedBoxes.length;
-
-            if (selectedSection3Count > 3) {
-                checkbox.checked = false;
-                showToast('โปรดเลือกความจำเป็นมากที่สุดเพียง 3 หัวข้อ', 'warning');
-                return;
-            }
-
-            document.getElementById('section3Counter').innerText = selectedSection3Count;
-        }
-
-        // Render Section 4 Training Formats
-        function renderTrainingFormats() {
-            const container = document.getElementById('trainingFormatContainer');
-            container.innerHTML = TRAINING_FORMATS.map((fmt, idx) => `
-                <div>
-                    <input type="checkbox" id="fmt_${idx}" value="${fmt}" class="hidden checkbox-custom sec4-checkbox">
-                    <label for="fmt_${idx}" class="flex items-center p-3 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition h-full">
-                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
-                            <i class="fa-solid fa-check hidden"></i>
-                        </span>
-                        <span>${fmt}</span>
-                    </label>
-                </div>
-            `).join('');
-        }
-
-        // Render Section 5 Work Problems
-        function renderWorkProblems() {
-            const container = document.getElementById('workProblemsContainer');
-            container.innerHTML = WORK_PROBLEMS.map((prob, idx) => `
-                <div>
-                    <input type="checkbox" id="prob_${idx}" value="${prob}" class="hidden checkbox-custom sec5-checkbox" onchange="handleSection5Change(this)">
-                    <label for="prob_${idx}" class="flex items-start p-3 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition h-full">
-                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
-                            <i class="fa-solid fa-check hidden"></i>
-                        </span>
-                        <span>${prob}</span>
-                    </label>
-                </div>
-            `).join('');
-        }
-
-        function handleSection5Change(checkbox) {
-            const checkedBoxes = document.querySelectorAll('.sec5-checkbox:checked');
-            selectedSection5Count = checkedBoxes.length;
-
-            if (selectedSection5Count > 3) {
-                checkbox.checked = false;
-                showToast('เลือกปัญหาได้ไม่เกิน 3 ข้อ', 'warning');
-                return;
-            }
-
-            document.getElementById('section5Counter').innerText = selectedSection5Count;
-
-            const otherContainer = document.getElementById('workProblemOtherContainer');
-            const isOtherChecked = Array.from(checkedBoxes).some(cb => cb.value === 'อื่น ๆ');
-            if (isOtherChecked) {
-                otherContainer.classList.remove('hidden');
-            } else {
-                otherContainer.classList.add('hidden');
-            }
-        }
-
-        function toggleTrainerTopic(show) {
-            const container = document.getElementById('trainerTopicContainer');
-            if (show) {
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
-        }
-
-        // Toast Notification System
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMessage.innerText = message;
-
-            if (type === 'warning') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
-            } else if (type === 'error') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-400"></i>';
-            } else {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-            }, 3500);
-        }
-
-        // Modal Controls & Dashboard Renderer
-        function openAdminModal() {
-            renderSubmissionTable();
-            renderDashboard();
-            document.getElementById('adminModal').classList.remove('hidden');
-        }
-
-        function closeAdminModal() {
-            document.getElementById('adminModal').classList.add('hidden');
-        }
-
-        function switchAdminTab(tab) {
-            const dashView = document.getElementById('dashboardView');
-            const tableView = document.getElementById('tableView');
-            const btnDash = document.getElementById('tabBtnDashboard');
-            const btnTable = document.getElementById('tabBtnTable');
-
-            if (tab === 'dashboard') {
-                dashView.classList.remove('hidden');
-                tableView.classList.add('hidden');
-                btnDash.className = "px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold";
-                btnTable.className = "px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900";
-            } else {
-                dashView.classList.add('hidden');
-                tableView.classList.remove('hidden');
-                btnDash.className = "px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900";
-                btnTable.className = "px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold";
-            }
-        }
-
-        // Form Submission Logic
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-
-            // Validate Section 1
-            const selectedLocRadio = document.querySelector('input[name="workLocation"]:checked');
-            if (!selectedLocRadio) {
-                showToast('โปรดเลือกจุดปฏิบัติงานในส่วนที่ 1', 'warning');
-                return;
-            }
-            let workLocation = selectedLocRadio.value;
-            if (workLocation === 'อื่น ๆ') {
-                workLocation = 'อื่น ๆ: ' + document.getElementById('workLocationOther').value.trim();
-            }
-
-            const selectedJobRadio = document.querySelector('input[name="jobNature"]:checked');
-            if (!selectedJobRadio) {
-                showToast('โปรดเล็ือกลักษณะการปฏิบัติงานในส่วนที่ 1', 'warning');
-                return;
-            }
-            const jobNature = selectedJobRadio.value;
-
-            // Section 2
-            const section2Topics = Array.from(document.querySelectorAll('.sec2-radio:checked')).map(cb => cb.value);
-            if (section2Topics.length === 0) {
-                showToast('โปรดเลือกหัวข้อความต้องการพัฒนาศักยภาพอย่างน้อย 1 หมวด (ส่วนที่ 2)', 'warning');
-                return;
-            }
-
-            // Section 3
-            const section3Priority = Array.from(document.querySelectorAll('.sec3-checkbox:checked')).map(cb => cb.value);
-            if (section3Priority.length !== 3) {
-                showToast('โปรดเลือก 3 หัวข้อที่มีความจำเป็นต่อการปฏิบัติงานมากที่สุดในส่วนที่ 3', 'warning');
-                return;
-            }
-
-            // Section 4 (Problems)
-            let workProblems = Array.from(document.querySelectorAll('.sec5-checkbox:checked')).map(cb => cb.value);
-            if (workProblems.includes('อื่น ๆ')) {
-                const probOther = document.getElementById('workProblemOther').value.trim();
-                workProblems = workProblems.map(p => p === 'อื่น ๆ' ? `อื่น ๆ: ${probOther}` : p);
-            }
-
-            // Section 5 (Suggestions)
-            const suggestionTopic = document.getElementById('suggestionTopic').value.trim();
-            const suggestionImprovement = document.getElementById('suggestionImprovement').value.trim();
-
-            // Section 6 (Internal Trainer)
-            const selectedTrainerRadio = document.querySelector('input[name="trainerReadiness"]:checked');
-            const trainerReadiness = selectedTrainerRadio ? selectedTrainerRadio.value : "ไม่ได้ระบุ";
-            const trainerTopic = document.getElementById('trainerTopic').value.trim();
-
-            const formData = {
-                timestamp: new Date().toLocaleString('th-TH'),
-                workLocation,
-                jobNature,
-                section2Topics,
-                section3Priority,
-                workProblems,
-                suggestionTopic,
-                suggestionImprovement,
-                trainerReadiness,
-                trainerTopic
+            const getCellString = (row, colIdx) => {
+                if (!row || !row.c || colIdx < 0 || colIdx >= row.c.length) return "";
+                const cell = row.c[colIdx];
+                if (!cell) return "";
+                if (cell.f !== null && cell.f !== undefined) return String(cell.f).trim();
+                if (cell.v !== null && cell.v !== undefined) return String(cell.v).trim();
+                return "";
             };
 
-            // UI Loading state
-            const submitBtn = document.getElementById('submitBtn');
-            const origText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังส่งข้อมูล...';
+            const getCellNum = (row, colIdx) => {
+                if (!row || !row.c || colIdx < 0 || colIdx >= row.c.length) return 0;
+                const cell = row.c[colIdx];
+                if (!cell) return 0;
 
-            // 1. บันทึกลง LocalStorage สำรองไว้ในเครื่องผู้ตอบ
-            localSubmissions.unshift(formData);
-            localStorage.setItem('rpark_survey_submissions', JSON.stringify(localSubmissions));
+                if (cell.v !== null && cell.v !== undefined) {
+                    if (typeof cell.v === 'number') return cell.v;
+                    const clean = String(cell.v).replace(/,/g, '').trim();
+                    const parsed = parseFloat(clean);
+                    if (!isNaN(parsed)) return parsed;
+                }
+                if (cell.f !== null && cell.f !== undefined) {
+                    const clean = String(cell.f).replace(/,/g, '').trim();
+                    const parsed = parseFloat(clean);
+                    if (!isNaN(parsed)) return parsed;
+                }
+                return 0;
+            };
 
-            // 2. ส่งข้อมูลไปยัง Google Sheets แบบ Real-time (หากตั้งค่า GOOGLE_SCRIPT_URL ไว้)
-            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== "") {
+            const syncGoogleSheetData = async (silent = false) => {
+                if (!silent) setIsLoading(true);
+                const sheetId = '13iq2hGdH0h0LaISywv7XJjXKXOBYzddiixk2X8aaewk';
+                
                 try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(formData)
+                    // 1. Fetch Follower Tab
+                    const followerUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Follower`;
+                    const followerRes = await fetch(followerUrl);
+                    if (followerRes.ok) {
+                        const text = await followerRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) processFollowers(obj.table.rows);
+                        }
+                    }
+
+                    // 2. Fetch Reach Tab
+                    const reachUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Reach`;
+                    const reachRes = await fetch(reachUrl);
+                    if (reachRes.ok) {
+                        const text = await reachRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) processReach(obj.table.rows);
+                        }
+                    }
+
+                    // 3. Fetch Gender Tab
+                    const genderUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Gender`;
+                    const genderRes = await fetch(genderUrl);
+                    if (genderRes.ok) {
+                        const text = await genderRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) setGenderRawRows(obj.table.rows);
+                        }
+                    }
+
+                    // 4. Fetch Age Tab
+                    const ageUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Age`;
+                    const ageRes = await fetch(ageUrl);
+                    if (ageRes.ok) {
+                        const text = await ageRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) setAgeRawRows(obj.table.rows);
+                        }
+                    }
+
+                    // 5. Fetch Province/District Tab
+                    const provinceUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Province%2FDistrict`;
+                    const provinceRes = await fetch(provinceUrl);
+                    if (provinceRes.ok) {
+                        const text = await provinceRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) setProvinceRawRows(obj.table.rows);
+                        }
+                    }
+
+                    // 6. Fetch Country Tab
+                    const countryUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Country`;
+                    const countryRes = await fetch(countryUrl);
+                    if (countryRes.ok) {
+                        const text = await countryRes.text();
+                        const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\W\D]*)\);/);
+                        if (match) {
+                            const obj = JSON.parse(match[1]);
+                            if (obj.table && obj.table.rows) setCountryRawRows(obj.table.rows);
+                        }
+                    }
+
+                    if (!silent) showToast("ซิงค์ข้อมูลจากทุก Tab สำเร็จ!");
+                } catch (error) {
+                    console.warn("Live update failed, falling back to cached datasets.", error);
+                    if (!silent) showToast("ระบบดึงข้อมูลออฟไลน์มาแสดงผลชั่วคราว");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const processFollowers = (rows) => {
+                let headerRowIdx = 0;
+                let maxMatches = -1;
+                for (let r = 0; r < Math.min(rows.length, 15); r++) {
+                    const row = rows[r];
+                    if (!row || !row.c) continue;
+                    let matches = 0;
+                    for (let c = 0; c < Math.min(row.c.length, 10); c++) {
+                        const val = getCellString(row, c).toLowerCase();
+                        if (val.includes("เดือน") || val.includes("facebook") || val.includes("instagram") || val.includes("tiktok") || val.includes("line")) {
+                            matches++;
+                        }
+                    }
+                    if (matches > maxMatches) {
+                        maxMatches = matches;
+                        headerRowIdx = r;
+                    }
+                }
+
+                const headerRow = rows[headerRowIdx];
+                let colMap = { month: 0, fb_rprp: 1, ig: 3, tiktok: 4, line_net: 6, note: 8 };
+
+                if (headerRow && headerRow.c) {
+                    for (let c = 0; c < Math.min(headerRow.c.length, 10); c++) {
+                        const val = getCellString(headerRow, c).toLowerCase();
+                        if (val.includes("เดือน") || val.includes("month") || val.includes("date")) {
+                            colMap.month = c;
+                        } else if (val.includes("facebook rprp") || (val.includes("facebook") && !val.includes("school") && !val.includes("page"))) {
+                            colMap.fb_rprp = c;
+                        } else if (val.includes("instagram") || val.includes("ig")) {
+                            colMap.ig = c;
+                        } else if (val.includes("tiktok") || val.includes("tik tok")) {
+                            colMap.tiktok = c;
+                        } else if (val.includes("line") && (val.includes("ไม่รวม") || val.includes("net") || val.includes("unblocked") || val.includes("friend") || val.includes("active") || val.includes("oa"))) {
+                            colMap.line_net = c;
+                        } else if (val.includes("หมายเหตุ") || val.includes("note")) {
+                            colMap.note = c;
+                        }
+                    }
+                }
+
+                const dataRows = rows.slice(headerRowIdx + 1);
+                const parsed = dataRows.map((row, idx) => {
+                    if (!row || !row.c) return null;
+                    let month = getCellString(row, colMap.month);
+                    if (!month || month === "") return null;
+                    if (month.startsWith("Date(")) {
+                        const converted = parseGvizDate(month);
+                        if (converted) month = converted;
+                    }
+                    if (month.includes("ปีงบ") || month.includes("รวม") || month.includes("เฉลี่ย")) return null;
+
+                    const fy = getComputedFiscalYear(month);
+                    let fb_rprp = getCellNum(row, colMap.fb_rprp);
+                    let ig = getCellNum(row, colMap.ig);
+                    let tiktok = getCellNum(row, colMap.tiktok);
+                    let line_net = getCellNum(row, colMap.line_net);
+                    const note = getCellString(row, colMap.note);
+
+                    const fallbackRow = fallbackFollowerData.find(f => f.month.trim().replace(/\s+/g, ' ') === month.trim().replace(/\s+/g, ' '));
+                    if (fallbackRow) {
+                        if (fb_rprp === 0 && fallbackRow.fb_rprp > 0) fb_rprp = fallbackRow.fb_rprp;
+                        if (ig === 0 && fallbackRow.ig > 0) ig = fallbackRow.ig;
+                        if (tiktok === 0 && fallbackRow.tiktok > 0) tiktok = fallbackRow.tiktok;
+                        if (line_net === 0 && fallbackRow.line_net > 0) line_net = fallbackRow.line_net;
+                    }
+
+                    return {
+                        id: idx + 1,
+                        month: month,
+                        fy: fy,
+                        fb_rprp: fb_rprp,
+                        ig: ig,
+                        tiktok: tiktok,
+                        line_net: line_net,
+                        note: note || (fallbackRow ? fallbackRow.note : "")
+                    };
+                }).filter(item => item !== null && (item.fb_rprp > 0 || item.line_net > 0 || item.tiktok > 0 || item.ig > 0));
+
+                if (parsed.length > 0) setFollowerData(parsed);
+            };
+
+            const processReach = (rows) => {
+                let headerRowIdx = 0;
+                const dataRows = rows.slice(headerRowIdx + 1);
+                
+                const parsed = dataRows.map((row, idx) => {
+                    if (!row || !row.c) return null;
+                    let month = getCellString(row, 0);
+                    if (!month) return null;
+                    if (month.startsWith("Date(")) {
+                        const converted = parseGvizDate(month);
+                        if (converted) month = converted;
+                    }
+                    if (month.includes("รวม") || month.includes("เฉลี่ย")) return null;
+
+                    const fy = getComputedFiscalYear(month);
+                    
+                    // ดึงข้อมูลจาก Google Sheets ตามจริง
+                    let fb_reach = getCellNum(row, 3) || 0; 
+                    let ig_reach = getCellNum(row, 7) || 0; 
+                    let tiktok_views = getCellNum(row, 8) || 0; 
+
+                    // นำเงื่อนไขการตรวจสอบ Fallback ออกเพื่อให้แสดงข้อมูลตามที่คุณกรอกใน Google Sheets เท่านั้น
+                    return {
+                        id: idx + 1,
+                        month: month,
+                        fy: fy,
+                        fb_reach: fb_reach,
+                        ig_reach: ig_reach,
+                        tiktok_views: tiktok_views
+                    };
+                }).filter(item => item !== null && (item.fb_reach > 0 || item.tiktok_views > 0 || item.ig_reach > 0));
+
+                if (parsed.length > 0) setReachData(parsed);
+            };
+
+            // Dynamic Aggregator for Target Group based on Sub-Tabs and Filters
+            const targetGroupDataFiltered = useMemo(() => {
+                // 1. Process Gender Data from Gender Sheet
+                let maleTotal = 0;
+                let femaleTotal = 0;
+                let genderCount = 0;
+
+                // Column mappings based on standard multi-platform structure:
+                // Col 0: Month, Col 1-2: FB RPRP (Male, Female), Col 3-4: IG, Col 5-6: TikTok, Col 7-8: LINE OA
+                const platformGenderCols = {
+                    fb_rprp: { male: 1, female: 2 },
+                    ig: { male: 5, female: 6 },
+                    tiktok: { male: 7, female: 8 },
+                    line_net: { male: 9, female: 10 }
+                };
+
+                genderRawRows.forEach(row => {
+                    let monthStr = getCellString(row, 0);
+                    if (!monthStr || monthStr.includes("ปีงบ") || monthStr.includes("เดือน")) return;
+                    if (monthStr.startsWith("Date(")) monthStr = parseGvizDate(monthStr);
+
+                    const rowFy = getComputedFiscalYear(monthStr);
+                    if (selectedTargetFy !== "all" && rowFy !== selectedTargetFy) return;
+                    if (selectedTargetMonth !== "all" && !monthStr.includes(selectedTargetMonth)) return;
+
+                    if (selectedTargetPlatform === "all") {
+                        Object.values(platformGenderCols).forEach(cols => {
+                            const m = getCellNum(row, cols.male);
+                            const f = getCellNum(row, cols.female);
+                            if (m > 0 || f > 0) {
+                                maleTotal += m;
+                                femaleTotal += f;
+                                genderCount++;
+                            }
+                        });
+                    } else {
+                        const cols = platformGenderCols[selectedTargetPlatform];
+                        if (cols) {
+                            const m = getCellNum(row, cols.male);
+                            const f = getCellNum(row, cols.female);
+                            if (m > 0 || f > 0) {
+                                maleTotal += m;
+                                femaleTotal += f;
+                                genderCount++;
+                            }
+                        }
+                    }
+                });
+
+                let finalGender = [];
+                if (genderCount > 0 && (maleTotal > 0 || femaleTotal > 0)) {
+                    const sum = maleTotal + femaleTotal;
+                    finalGender = [
+                        { segment: "หญิง (Female)", value: Number(((femaleTotal / sum) * 100).toFixed(1)) },
+                        { segment: "ชาย (Male)", value: Number(((maleTotal / sum) * 100).toFixed(1)) }
+                    ];
+                } else {
+                    finalGender = fallbackTargetGroupTabs.gender;
+                }
+
+                // 2. Process Age Data from Age Sheet
+                // Col 0: Month, Col 1: FB RPRP, Col 2: IG, Col 3: TikTok, Col 4: LINE OA (or similar)
+                const ageCounts = {};
+                const platformAgeCols = { fb_rprp: 1, ig: 3, tiktok: 4, line_net: 5 };
+
+                ageRawRows.forEach(row => {
+                    let monthStr = getCellString(row, 0);
+                    if (!monthStr || monthStr.includes("ปีงบ") || monthStr.includes("เดือน")) return;
+                    if (monthStr.startsWith("Date(")) monthStr = parseGvizDate(monthStr);
+
+                    const rowFy = getComputedFiscalYear(monthStr);
+                    if (selectedTargetFy !== "all" && rowFy !== selectedTargetFy) return;
+                    if (selectedTargetMonth !== "all" && !monthStr.includes(selectedTargetMonth)) return;
+
+                    const extractAgeBracket = (colIdx) => {
+                        const val = getCellString(row, colIdx);
+                        if (val && val.length > 2) {
+                            ageCounts[val] = (ageCounts[val] || 0) + 1;
+                        }
+                    };
+
+                    if (selectedTargetPlatform === "all") {
+                        Object.values(platformAgeCols).forEach(colIdx => extractAgeBracket(colIdx));
+                    } else {
+                        const colIdx = platformAgeCols[selectedTargetPlatform];
+                        if (colIdx !== undefined) extractAgeBracket(colIdx);
+                    }
+                });
+
+                let finalAges = [];
+                const totalAgeRecords = Object.values(ageCounts).reduce((a, b) => a + b, 0);
+                if (totalAgeRecords > 0) {
+                    finalAges = Object.entries(ageCounts).map(([bracket, count]) => ({
+                        bracket: bracket,
+                        percentage: Number(((count / totalAgeRecords) * 100).toFixed(1))
+                    })).sort((a, b) => b.percentage - a.percentage);
+                } else {
+                    finalAges = fallbackTargetGroupTabs.ageBrackets;
+                }
+
+                // 3. Process Province/District Data
+                const provinceCounts = {};
+                provinceRawRows.forEach(row => {
+                    const name = getCellString(row, 0);
+                    const val = getCellNum(row, 1);
+                    if (name && val > 0) {
+                        provinceCounts[name] = (provinceCounts[name] || 0) + val;
+                    }
+                });
+
+                let finalRegions = [];
+                const totalProvinceVal = Object.values(provinceCounts).reduce((a, b) => a + b, 0);
+                if (totalProvinceVal > 0) {
+                    finalRegions = Object.entries(provinceCounts).map(([name, val]) => ({
+                        name: name,
+                        percentage: Number(((val / totalProvinceVal) * 100).toFixed(1))
+                    })).sort((a, b) => b.percentage - a.percentage).slice(0, 4);
+                } else {
+                    finalRegions = fallbackTargetGroupTabs.regions;
+                }
+
+                // 4. Process Country Data
+                const countryCounts = {};
+                countryRawRows.forEach(row => {
+                    const name = getCellString(row, 0);
+                    const val = getCellNum(row, 1);
+                    if (name && val > 0) {
+                        countryCounts[name] = (countryCounts[name] || 0) + val;
+                    }
+                });
+
+                let finalCountries = [];
+                const totalCountryVal = Object.values(countryCounts).reduce((a, b) => a + b, 0);
+                if (totalCountryVal > 0) {
+                    finalCountries = Object.entries(countryCounts).map(([name, val]) => ({
+                        name: name,
+                        percentage: Number(((val / totalCountryVal) * 100).toFixed(1))
+                    })).sort((a, b) => b.percentage - a.percentage);
+                } else {
+                    finalCountries = fallbackTargetGroupTabs.countries;
+                }
+
+                return {
+                    gender: finalGender,
+                    ageBrackets: finalAges,
+                    regions: finalRegions,
+                    countries: finalCountries
+                };
+            }, [genderRawRows, ageRawRows, provinceRawRows, countryRawRows, selectedTargetFy, selectedTargetMonth, selectedTargetPlatform]);
+
+            useEffect(() => {
+                syncGoogleSheetData(true);
+            }, []);
+
+            const availableMonths = useMemo(() => {
+                const activeSet = activeTab === "reach" ? reachData : followerData;
+                return activeSet
+                    .filter(d => selectedFys.includes(d.fy))
+                    .map(d => d.month);
+            }, [selectedFys, followerData, reachData, activeTab]);
+
+            const filteredTimelineData = useMemo(() => {
+                const activeSet = activeTab === "reach" ? reachData : followerData;
+                let subset = activeSet.filter(d => selectedFys.includes(d.fy));
+
+                if (startMonth !== "ทั้งหมด") {
+                    const startIndex = subset.findIndex(d => d.month === startMonth);
+                    if (startIndex !== -1) {
+                        subset = subset.slice(startIndex);
+                    }
+                }
+                if (endMonth !== "ทั้งหมด") {
+                    const endIndex = subset.findIndex(d => d.month === endMonth);
+                    if (endIndex !== -1) {
+                        subset = subset.slice(0, endIndex + 1);
+                    }
+                }
+                return subset;
+            }, [selectedFys, startMonth, endMonth, followerData, reachData, activeTab]);
+
+            const stats = useMemo(() => {
+                const data = filteredTimelineData;
+                if (data.length === 0) return {};
+
+                const calcPlatformStat = (key) => {
+                    const validPoints = data.filter(d => d[key] > 0);
+                    if (validPoints.length === 0) return { current: 0, growth: 0, growthPct: 0 };
+                    
+                    const latest = validPoints[validPoints.length - 1][key];
+                    const earliest = validPoints[0][key];
+                    const diff = latest - earliest;
+                    const pct = earliest > 0 ? ((diff / earliest) * 100).toFixed(1) : 0;
+
+                    return { current: latest, growth: diff, growthPct: pct };
+                };
+
+                if (activeTab === "reach") {
+                    return {
+                        fb_reach: calcPlatformStat('fb_reach'),
+                        ig_reach: calcPlatformStat('ig_reach'),
+                        tiktok_views: calcPlatformStat('tiktok_views')
+                    };
+                } else {
+                    return {
+                        fb_rprp: calcPlatformStat('fb_rprp'),
+                        ig: calcPlatformStat('ig'),
+                        tiktok: calcPlatformStat('tiktok'),
+                        line_net: calcPlatformStat('line_net')
+                    };
+                }
+            }, [filteredTimelineData, activeTab]);
+
+            const overallTotals = useMemo(() => {
+                const data = filteredTimelineData;
+                if (data.length === 0) return { latestTotal: 0, change: 0, pctChange: 0 };
+                const latest = data[data.length - 1];
+                const earliest = data[0];
+
+                let sumLatest = 0, sumEarliest = 0;
+                if (activeTab === "reach") {
+                    sumLatest = (latest.fb_reach || 0) + (latest.ig_reach || 0) + (latest.tiktok_views || 0);
+                    sumEarliest = (earliest.fb_reach || 0) + (earliest.ig_reach || 0) + (earliest.tiktok_views || 0);
+                } else {
+                    sumLatest = (latest.fb_rprp || 0) + (latest.ig || 0) + (latest.tiktok || 0) + (latest.line_net || 0);
+                    sumEarliest = (earliest.fb_rprp || 0) + (earliest.ig || 0) + (earliest.tiktok || 0) + (earliest.line_net || 0);
+                }
+
+                return {
+                    latestTotal: sumLatest,
+                    change: sumLatest - sumEarliest,
+                    pctChange: sumEarliest > 0 ? (((sumLatest - sumEarliest) / sumEarliest) * 100).toFixed(1) : 0
+                };
+            }, [filteredTimelineData, activeTab]);
+
+            useEffect(() => {
+                if (!chartRef.current) return;
+
+                const ctx = chartRef.current.getContext('2d');
+                if (chartInstance.current) {
+                    chartInstance.current.destroy();
+                }
+
+                let chartData = { labels: [], datasets: [] };
+                let options = {};
+
+                if (activeTab === "follower") {
+                    if (chartMode === "timeline") {
+                        const labels = filteredTimelineData.map(d => d.month);
+                        const datasets = selectedPlatforms.map(platformKey => {
+                            const info = platforms[platformKey];
+                            const dataPoints = filteredTimelineData.map(d => d[platformKey] || null);
+                            return {
+                                label: info.label,
+                                data: dataPoints,
+                                borderColor: info.color,
+                                backgroundColor: info.color + '1A',
+                                borderWidth: 3,
+                                pointBackgroundColor: info.color,
+                                pointBorderColor: '#fff',
+                                pointRadius: labels.length > 20 ? 3 : 5,
+                                tension: 0.35,
+                                fill: false
+                            };
+                        });
+                        chartData = { labels, datasets };
+                        options = {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'top', labels: { font: { family: 'Sarabun' } } }
+                            },
+                            scales: {
+                                y: { ticks: { callback: v => v.toLocaleString('th-TH') } }
+                            }
+                        };
+                    } else {
+                        chartData.labels = fiscalMonthsSequence;
+                        chartData.datasets = selectedFys.map(fy => {
+                            const style = fyColors[fy] || { border: "#94A3B8", bg: "#94A3B81A" };
+                            const yearDataPoints = fiscalMonthsSequence.map(monthName => {
+                                const found = followerData.find(d => d.fy === fy && d.month.startsWith(monthName));
+                                if (!found) return null;
+                                return found[comparisonPlatform] || null;
+                            });
+                            return {
+                                label: `ปีงบประมาณ ${fy}`,
+                                data: yearDataPoints,
+                                borderColor: style.border,
+                                backgroundColor: style.bg,
+                                borderWidth: 3,
+                                pointRadius: 5,
+                                tension: 0.35,
+                                fill: true
+                            };
+                        });
+                        options = {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'top', labels: { font: { family: 'Sarabun' } } }
+                            },
+                            scales: {
+                                y: { ticks: { callback: v => v.toLocaleString('th-TH') } }
+                            }
+                        };
+                    }
+                } else if (activeTab === "reach") {
+                    // Reach Tab Visualization for 3 platforms
+                    const labels = filteredTimelineData.map(d => d.month);
+                    chartData = {
+                        labels,
+                        datasets: [
+                            {
+                                label: 'Facebook Reach',
+                                data: filteredTimelineData.map(d => d.fb_reach),
+                                borderColor: '#1877F2',
+                                backgroundColor: '#1877F21F',
+                                borderWidth: 2.5,
+                                tension: 0.35,
+                                fill: true
+                            },
+                            {
+                                label: 'Instagram Reach',
+                                data: filteredTimelineData.map(d => d.ig_reach),
+                                borderColor: '#E1306C',
+                                backgroundColor: '#E1306C12',
+                                borderWidth: 2.5,
+                                tension: 0.35,
+                                fill: true
+                            },
+                            {
+                                label: 'TikTok Views',
+                                data: filteredTimelineData.map(d => d.tiktok_views),
+                                borderColor: '#010101',
+                                backgroundColor: '#0101010A',
+                                borderWidth: 2.5,
+                                tension: 0.35,
+                                fill: true
+                            }
+                        ]
+                    };
+                    options = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', labels: { font: { family: 'Sarabun' } } }
+                        },
+                        scales: {
+                            y: { ticks: { callback: v => v.toLocaleString('th-TH') } }
+                        }
+                    };
+                } else if (activeTab === "target") {
+                    chartData = {
+                        labels: targetGroupDataFiltered.ageBrackets.map(item => item.bracket),
+                        datasets: [{
+                            label: 'สัดส่วนช่วงอายุผู้ติดตาม (%)',
+                            data: targetGroupDataFiltered.ageBrackets.map(item => item.percentage),
+                            backgroundColor: [
+                                '#F4D160', '#D4AC2B', '#EAF5EC', '#1E5128', '#113217', '#F95738'
+                            ],
+                            borderRadius: 8,
+                            borderWidth: 1
+                        }]
+                    };
+                    options = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { max: 100, ticks: { callback: v => v + '%' } }
+                        }
+                    };
+                }
+
+                chartInstance.current = new Chart(ctx, {
+                    type: activeTab === "target" ? 'bar' : 'line',
+                    data: chartData,
+                    options: options
+                });
+
+                return () => {
+                    if (chartInstance.current) {
+                        chartInstance.current.destroy();
+                    }
+                };
+            }, [filteredTimelineData, selectedFys, selectedPlatforms, chartMode, comparisonPlatform, activeTab, targetGroupDataFiltered, followerData]);
+
+            const togglePlatform = (key) => {
+                if (selectedPlatforms.includes(key)) {
+                    if (selectedPlatforms.length === 1) return;
+                    setSelectedPlatforms(selectedPlatforms.filter(p => p !== key));
+                } else {
+                    setSelectedPlatforms([...selectedPlatforms, key]);
+                }
+            };
+
+            const toggleFy = (fy) => {
+                if (selectedFys.includes(fy)) {
+                    if (selectedFys.length === 1) return;
+                    setSelectedFys(selectedFys.filter(f => f !== fy));
+                } else {
+                    setSelectedFys([...selectedFys, fy].sort());
+                }
+            };
+
+            const showToast = (msg) => {
+                setToastMsg(msg);
+                setTimeout(() => setToastMsg(null), 3000);
+            };
+
+            const exportToCSV = () => {
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                if (activeTab === "reach") {
+                    csvContent += "เดือน,ปีงบประมาณ,Facebook Reach,Instagram Reach,TikTok Views\n";
+                    filteredTimelineData.forEach(row => {
+                        csvContent += `"${row.month}","${row.fy}",${row.fb_reach || 0},${row.ig_reach || 0},${row.tiktok_views || 0}\n`;
                     });
-                } catch (err) {
-                    console.error("Error submitting to Google Sheets:", err);
+                } else {
+                    csvContent += "เดือน,ปีงบประมาณ,Facebook RPRP,Instagram,Tiktok,LINE OA,หมายเหตุ\n";
+                    filteredTimelineData.forEach(row => {
+                        csvContent += `"${row.month}","${row.fy}",${row.fb_rprp || 0},${row.ig || 0},${row.tiktok || 0},${row.line_net || 0},"${row.note || ''}"\n`;
+                    });
                 }
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `Rajapruek_${activeTab}_Data.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast("ดาวน์โหลดไฟล์รายงานเปรียบเทียบเรียบร้อยแล้ว!");
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col pb-12">
+                    {toastMsg && (
+                        <div className="fixed bottom-5 right-5 z-50 bg-rajapruek-greendark text-white px-5 py-3 rounded-xl shadow-2xl border-l-4 border-rajapruek-gold flex items-center space-x-3 transition-all">
+                            <span className="w-2 h-2 rounded-full bg-rajapruek-gold animate-ping"></span>
+                            <span className="font-medium text-sm text-white">{toastMsg}</span>
+                        </div>
+                    )}
+
+                    {/* Dashboard Header Banner */}
+                    <header className="bg-gradient-to-r from-rajapruek-greendark via-rajapruek-green to-rajapruek-greendark text-white shadow-xl relative overflow-hidden">
+                        <div className="absolute right-0 top-0 bottom-0 opacity-10 w-1/3 bg-no-repeat bg-right bg-contain" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&q=80')" }}></div>
+                        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div className="flex items-center space-x-4">
+                                <div className="p-3 bg-white/10 rounded-2xl border border-white/20 animate-float">
+                                    <svg className="w-10 h-10 text-rajapruek-gold" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2C11.5 4 9 7 9 10C9 13.5 11.5 15 12 15C12.5 15 15 13.5 15 10C15 7 12.5 4 12 2Z"/>
+                                        <path d="M12 16C8.5 16 5 18 5 20C5 21 6 22 12 22C18 22 19 21 19 20C19 18 15.5 16 12 16Z" opacity="0.8"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl sm:text-2xl font-extrabold text-white mt-1 tracking-tight leading-snug">
+                                        ข้อมูลเชิงลึก (Insight) ช่องทางสื่อออนไลน์ของอุทยานหลวงราชพฤกษ์
+                                    </h1>
+                                    <p className="text-rajapruek-gold font-medium text-xs sm:text-sm mt-1">
+                                        อุทยานหลวงราชพฤกษ์ • Royal Park Rajapruek
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                                <button 
+                                    onClick={() => syncGoogleSheetData(false)}
+                                    disabled={isLoading}
+                                    className="bg-white/10 hover:bg-white/20 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl border border-white/20 flex items-center space-x-2 transition duration-200 text-xs w-full sm:w-auto justify-center whitespace-nowrap"
+                                >
+                                    <i data-lucide="refresh-cw" className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`}></i>
+                                    <span className="whitespace-nowrap">{isLoading ? 'กำลังซิงค์...' : 'ซิงค์ข้อมูลใหม่'}</span>
+                                </button>
+
+                                {activeTab === "follower" && (
+                                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex flex-col justify-center w-[420px] max-w-full transition-all">
+                                        <div className="text-center w-full">
+                                            <p className="text-[11px] sm:text-xs text-white/95 font-semibold leading-relaxed mb-1 whitespace-nowrap">
+                                                {activeTab === "reach" ? "ยอดรวมการเข้าถึงทุกแพลตฟอร์ม" : "ยอดรวมผู้ติดตามทุกแพลตฟอร์ม"}ตามปีงบประมาณที่เลือก
+                                            </p>
+                                            <p className="text-2xl sm:text-3xl font-extrabold text-rajapruek-gold drop-shadow-sm my-0.5">
+                                                {overallTotals.latestTotal ? overallTotals.latestTotal.toLocaleString() : "-"} {activeTab === "reach" ? "ครั้ง" : "คน"}
+                                            </p>
+                                            <p className="text-[10px] text-white/80 font-medium leading-relaxed mt-1 whitespace-nowrap">
+                                                เปรียบเทียบตามปีงบประมาณที่เลือก {formatFysText(selectedFys)}
+                                            </p>
+                                            <span className="text-[11px] text-green-300 font-bold block mt-0.5">
+                                                {overallTotals.change >= 0 ? '↑' : '↓'} {overallTotals.change ? Math.abs(overallTotals.change).toLocaleString() : "0"} ({overallTotals.pctChange}%)
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Premium Segment Navigation Tabs */}
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full">
+                        <div className="bg-white p-2 rounded-2xl border border-emerald-100 shadow-sm flex flex-col sm:flex-row gap-2 justify-center">
+                            <button 
+                                onClick={() => { setActiveTab("follower"); setStartMonth("ทั้งหมด"); setEndMonth("ทั้งหมด"); }}
+                                className={`flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold rounded-xl transition-all duration-300 ${
+                                    activeTab === "follower" 
+                                    ? 'bg-rajapruek-green text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-rajapruek-greenlight/50 hover:text-rajapruek-green'
+                                }`}
+                            >
+                                <i data-lucide="users" className="w-5 h-5"></i>
+                                <span>ผู้ติดตาม (Follower)</span>
+                            </button>
+
+                            <button 
+                                onClick={() => { setActiveTab("reach"); setStartMonth("ทั้งหมด"); setEndMonth("ทั้งหมด"); }}
+                                className={`flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold rounded-xl transition-all duration-300 ${
+                                    activeTab === "reach" 
+                                    ? 'bg-rajapruek-green text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-rajapruek-greenlight/50 hover:text-rajapruek-green'
+                                }`}
+                            >
+                                <i data-lucide="trending-up" className="w-5 h-5"></i>
+                                <span>การเข้าถึง (Reach)</span>
+                            </button>
+
+                            <button 
+                                onClick={() => { setActiveTab("target"); }}
+                                className={`flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold rounded-xl transition-all duration-300 ${
+                                    activeTab === "target" 
+                                    ? 'bg-rajapruek-green text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-rajapruek-greenlight/50 hover:text-rajapruek-green'
+                                }`}
+                            >
+                                <i data-lucide="target" className="w-5 h-5"></i>
+                                <span>กลุ่มเป้าหมาย (Target Group)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Main Content Layout Block */}
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                        
+                        {/* Side Panel: Filter System */}
+                        <aside className="lg:col-span-4 space-y-6">
+                            <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center space-x-2">
+                                            <div className="p-1.5 bg-rajapruek-greenlight rounded-lg">
+                                                <i data-lucide="calendar" className="w-5 h-5 text-rajapruek-green"></i>
+                                            </div>
+                                            <h3 className="font-bold text-rajapruek-greendark text-base">เปรียบเทียบปีงบประมาณ</h3>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2.5">
+                                        {fiscalYearsList.map(fy => {
+                                            const isChecked = selectedFys.includes(fy);
+                                            const colorTheme = fyColors[fy] || { border: "#ccc" };
+                                            return (
+                                                <div 
+                                                    key={fy} 
+                                                    onClick={() => toggleFy(fy)}
+                                                    className={`flex items-center justify-between p-3 rounded-xl border transition duration-200 cursor-pointer ${
+                                                        isChecked ? 'bg-rajapruek-soft border-rajapruek-green/20' : 'bg-white border-gray-100'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center space-x-3">
+                                                        <div 
+                                                            className={`w-5 h-5 rounded-md flex items-center justify-center border`}
+                                                            style={{ 
+                                                                borderColor: isChecked ? colorTheme.border : '#d1d5db',
+                                                                backgroundColor: isChecked ? colorTheme.border : 'transparent'
+                                                            }}
+                                                        >
+                                                            {isChecked && <i data-lucide="check" className="w-3.5 h-3.5 text-white stroke-[3]"></i>}
+                                                        </div>
+                                                        <span className="text-sm font-bold text-gray-800">ปีงบประมาณ {fy}</span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Month Range Selector */}
+                                <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                    <div className="flex items-center space-x-2 mb-3">
+                                        <div className="p-1.5 bg-rajapruek-greenlight rounded-lg">
+                                            <i data-lucide="filter" className="w-4 h-4 text-rajapruek-green"></i>
+                                        </div>
+                                        <h3 className="font-bold text-rajapruek-greendark text-sm">ตัวกรองช่วงเดือนเฉพาะเจาะจง</h3>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="text-[10px] text-gray-400 block mb-1 font-bold">จากเดือน (Start Month)</label>
+                                            <select 
+                                                value={startMonth} 
+                                                onChange={(e) => setStartMonth(e.target.value)}
+                                                className="w-full bg-rajapruek-soft border border-gray-200 text-gray-800 rounded-xl px-3 py-2 text-xs appearance-none cursor-pointer"
+                                            >
+                                                <option value="ทั้งหมด">แสดงตั้งแต่จุดแรกสุดของข้อมูล</option>
+                                                {availableMonths.map(m => (
+                                                    <option key={m} value={m}>{m}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] text-gray-400 block mb-1 font-bold">ถึงเดือน (End Month)</label>
+                                            <select 
+                                                value={endMonth} 
+                                                onChange={(e) => setEndMonth(e.target.value)}
+                                                className="w-full bg-rajapruek-soft border border-gray-200 text-gray-800 rounded-xl px-3 py-2 text-xs appearance-none cursor-pointer"
+                                            >
+                                                <option value="ทั้งหมด">แสดงจนถึงจุดล่าสุดของข้อมูล</option>
+                                                {availableMonths.map(m => (
+                                                    <option key={m} value={m}>{m}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Platform Multi/Single Selector */}
+                                {activeTab === "follower" && (
+                                    chartMode === "timeline" ? (
+                                        <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                            <h3 className="font-bold text-rajapruek-greendark text-base mb-3">ช่องทางสื่อออนไลน์</h3>
+                                            <div className="space-y-2">
+                                                {Object.entries(platforms).map(([key, info]) => {
+                                                    const isSelected = selectedPlatforms.includes(key);
+                                                    return (
+                                                        <div 
+                                                            key={key}
+                                                            onClick={() => togglePlatform(key)}
+                                                            className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition ${
+                                                                isSelected ? 'bg-rajapruek-greenlight/50 border-rajapruek-green/30' : 'bg-white border-gray-100'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center space-x-2.5">
+                                                                <div 
+                                                                    className="w-4 h-4 rounded flex items-center justify-center border"
+                                                                    style={{ 
+                                                                        borderColor: isSelected ? info.color : '#d1d5db',
+                                                                        backgroundColor: isSelected ? info.color : 'transparent'
+                                                                    }}
+                                                                >
+                                                                    {isSelected && <i data-lucide="check" className="w-3 h-3 text-white stroke-[3]"></i>}
+                                                                </div>
+                                                                <span className="text-xs font-bold text-gray-800">{info.label}</span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                            <h3 className="font-bold text-rajapruek-greendark text-base mb-3">เปรียบเทียบช่องทางเดี่ยว</h3>
+                                            <div className="space-y-2">
+                                                {Object.entries(platforms).map(([key, info]) => {
+                                                    const isSelected = comparisonPlatform === key;
+                                                    return (
+                                                        <div 
+                                                            key={key}
+                                                            onClick={() => setComparisonPlatform(key)}
+                                                            className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition ${
+                                                                isSelected ? 'bg-rajapruek-green text-white border-transparent' : 'bg-white border-gray-100'
+                                                            }`}
+                                                        >
+                                                            <span className="text-xs font-bold">{info.label}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
+                            </aside>
+
+                        {/* Main Grid Block */}
+                        <main className="lg:col-span-8 space-y-6">
+                            
+                            {/* TAB 1: Follower Content Dashboard */}
+                            {activeTab === "follower" && (
+                                <React.Fragment>
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                        <div className="bg-white p-4 rounded-2xl border border-emerald-50/50 shadow-sm">
+                                            <div className="flex items-center justify-between text-gray-400">
+                                                <span className="text-xs font-semibold">Facebook RPRP</span>
+                                                <i data-lucide="facebook" className="w-4 h-4 text-[#1877F2]"></i>
+                                            </div>
+                                            <div className="mt-2">
+                                                <h4 className="text-lg font-bold text-gray-800">
+                                                    {stats.fb_rprp?.current ? stats.fb_rprp.current.toLocaleString() : "-"}
+                                                </h4>
+                                                <p className="text-[10px] text-emerald-600 mt-0.5 font-medium flex items-center">
+                                                    <span>↑</span>
+                                                    {stats.fb_rprp?.growth > 0 ? `+${stats.fb_rprp.growth.toLocaleString()} (${stats.fb_rprp.growthPct}%)` : "คงที่"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-2xl border border-emerald-50/50 shadow-sm">
+                                            <div className="flex items-center justify-between text-gray-400">
+                                                <span className="text-xs font-semibold">TikTok</span>
+                                                <i data-lucide="music" className="w-4 h-4 text-black"></i>
+                                            </div>
+                                            <div className="mt-2">
+                                                <h4 className="text-lg font-bold text-gray-800">
+                                                    {stats.tiktok?.current ? stats.tiktok.current.toLocaleString() : "-"}
+                                                </h4>
+                                                <p className="text-[10px] text-emerald-600 mt-0.5 font-medium flex items-center">
+                                                    <span>↑</span>
+                                                    {stats.tiktok?.growth > 0 ? `+${stats.tiktok.growth.toLocaleString()} (${stats.tiktok.growthPct}%)` : "คงที่"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-2xl border border-emerald-50/50 shadow-sm">
+                                            <div className="flex items-center justify-between text-gray-400">
+                                                <span className="text-xs font-semibold">LINE OA</span>
+                                                <i data-lucide="message-circle" className="w-4 h-4 text-[#06C755]"></i>
+                                            </div>
+                                            <div className="mt-2">
+                                                <h4 className="text-lg font-bold text-gray-800">
+                                                    {stats.line_net?.current ? stats.line_net.current.toLocaleString() : "-"}
+                                                </h4>
+                                                <p className="text-[10px] text-emerald-600 mt-0.5 font-medium flex items-center">
+                                                    <span>↑</span>
+                                                    {stats.line_net?.growth > 0 ? `+${stats.line_net.growth.toLocaleString()} (${stats.line_net.growthPct}%)` : "คงที่"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-2xl border border-emerald-50/50 shadow-sm">
+                                            <div className="flex items-center justify-between text-gray-400">
+                                                <span className="text-xs font-semibold">Instagram</span>
+                                                <i data-lucide="instagram" className="w-4 h-4 text-[#E1306C]"></i>
+                                            </div>
+                                            <div className="mt-2">
+                                                <h4 className="text-lg font-bold text-gray-800">
+                                                    {stats.ig?.current ? stats.ig.current.toLocaleString() : "-"}
+                                                </h4>
+                                                <p className="text-[10px] text-emerald-600 mt-0.5 font-medium flex items-center">
+                                                    <span>↑</span>
+                                                    {stats.ig?.growth > 0 ? `+${stats.ig.growth.toLocaleString()} (${stats.ig.growthPct}%)` : "คงที่"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Chart Wrapper Container */}
+                                    <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-gray-100 gap-4">
+                                            <div>
+                                                <h3 className="font-extrabold text-rajapruek-greendark text-lg flex items-center gap-1.5">
+                                                    <span>กราฟเปรียบเทียบการเติบโต</span>
+                                                </h3>
+                                                <p className="text-xs text-gray-400">เปรียบเทียบแนวโน้มและมุมมองข้อมูลในมิติปีงบประมาณต่างๆ</p>
+                                            </div>
+                                            <div className="flex items-center bg-gray-100 p-1 rounded-xl">
+                                                <button 
+                                                    onClick={() => setChartMode("timeline")}
+                                                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 ${
+                                                        chartMode === "timeline" ? 'bg-white text-rajapruek-greendark shadow-xs' : 'text-gray-500 hover:text-gray-900'
+                                                    }`}
+                                                >
+                                                    เส้นเวลาต่อเนื่อง
+                                                </button>
+                                                <button 
+                                                    onClick={() => setChartMode("yoy")}
+                                                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 ${
+                                                        chartMode === "yoy" ? 'bg-white text-rajapruek-greendark shadow-xs' : 'text-gray-500 hover:text-gray-900'
+                                                    }`}
+                                                >
+                                                    เปรียบเทียบปีต่อปี (YoY)
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="relative h-[320px] sm:h-[380px]">
+                                            <canvas ref={chartRef}></canvas>
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {/* TAB 2: Reach & Impressions Dashboard */}
+                            {activeTab === "reach" && (
+                                <React.Fragment>
+                                    {/* 3 Cards for Reach and views metrics */}
+                                    <div className="bg-white p-6 rounded-2xl border border-emerald-50/50 shadow-sm">
+                                        <p className="text-sm text-gray-700 leading-relaxed flex items-start">
+                                            <span className="mr-2">💡</span>
+                                            <span>สถิติการเข้าถึง (Reach) เกิดจากการทำการตลาดแบบผสมผสาน ทั้งการเติบโตตามธรรมชาติ (Organic) และการโฆษณา (Paid Ads)</span>
+                                        </p>
+                                    </div>
+
+                                    {/* Reach Trend Graph for 3 Platforms */}
+                                    <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                        <div className="mb-6 pb-4 border-b border-gray-100">
+                                            <h3 className="font-extrabold text-rajapruek-greendark text-lg">แนวโน้มการเข้าถึงและการรับรู้สื่อ (Reach)</h3>
+                                            <p className="text-xs text-gray-400">วิเคราะห์ปริมาณผู้ชมสะสมรายเดือน เปรียบเทียบทั้ง 3 แพลตฟอร์มหลักของทางอุทยาน</p>
+                                        </div>
+                                        <div className="relative h-[320px] sm:h-[380px]">
+                                            <canvas ref={chartRef}></canvas>
+                                        </div>
+                                        
+                                        {/* Dedicated LINE OA Privacy warning block directly beneath Reach chart */}
+                                        <div className="mt-6 bg-amber-50 border border-amber-200/60 rounded-2xl p-4 flex items-start space-x-3 text-amber-900 text-xs leading-relaxed">
+                                            <i data-lucide="info" className="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+                                            <span>
+                                                <strong>หมายเหตุ:</strong> ระบบ LINE OA ไม่แสดงยอด Reach ในแบบโซเชียลมีเดียทั่วไป (เช่น Facebook หรือ IG) เพราะเป็นการสื่อสารแบบ 1:1 และ LINE เน้นเรื่อง Privacy ดังนั้นจึงไม่ต้องใช้ตัววัดค่า Reach เพื่อเดาว่ามีคนเห็นหรือไม่
+                                            </span>
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {/* TAB 3: Target Group Demographics Dashboard */}
+                            {activeTab === "target" && (
+                                <React.Fragment>
+                                    <div className="bg-white rounded-3xl p-4 border border-emerald-100 shadow-sm mb-4 flex flex-wrap gap-4 items-center">
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-400 block mb-1">เลือกปีงบประมาณ</label>
+                                            <select value={selectedTargetFy} onChange={(e) => setSelectedTargetFy(e.target.value)} className="bg-rajapruek-soft border rounded-lg px-3 py-1.5 text-xs">
+                                                <option value="all">ทุกปีงบประมาณ</option>
+                                                {fiscalYearsList.filter(y => y !== "2567").map(y => <option key={y} value={y}>ปีงบ {y}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-400 block mb-1">เลือกเดือน</label>
+                                            <select value={selectedTargetMonth} onChange={(e) => setSelectedTargetMonth(e.target.value)} className="bg-rajapruek-soft border rounded-lg px-3 py-1.5 text-xs">
+                                                <option value="ทั้งหมด">ทุกเดือน</option>
+                                                {fiscalMonthsSequence.map(m => <option key={m} value={m}>{m}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-400 block mb-1">เลือกแพลตฟอร์ม</label>
+                                            <select value={selectedTargetPlatform} onChange={(e) => setSelectedTargetPlatform(e.target.value)} className="bg-rajapruek-soft border rounded-lg px-3 py-1.5 text-xs">
+                                                <option value="all">ทุกแพลตฟอร์มรวมกัน</option>
+                                                {Object.entries(platforms).map(([k, p]) => <option key={k} value={k}>{p.label}</option>)}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow">
+                                            <h3 className="font-extrabold text-rajapruek-greendark text-base mb-2">สัดส่วนผู้ติดตามแยกตามกลุ่มช่วงอายุ (Age Tab)</h3>
+                                            <div className="relative h-[280px]">
+                                                <canvas ref={chartRef}></canvas>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white rounded-3xl p-6 border border-emerald-100 shadow-md botanical-glow flex flex-col justify-between">
+                                            <div>
+                                                <h3 className="font-extrabold text-rajapruek-greendark text-base mb-4">ข้อมูลเชิงลึกทางประชากรศาสตร์ (รวมจาก Tab ย่อย)</h3>
+                                                <div className="space-y-4">
+                                                    {/* เพศ */}
+                                                    <div className="bg-rajapruek-greenlight/40 p-4 rounded-xl border border-emerald-100">
+                                                        <h4 className="font-bold text-rajapruek-greendark text-xs mb-1.5">เพศ (Gender Tab)</h4>
+                                                        <div className="flex justify-between text-xs font-semibold">
+                                                            {targetGroupDataFiltered.gender.map(g => <span key={g.segment}>{g.segment}: {g.value}%</span>)}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* ภูมิภาค */}
+                                                    <div className="bg-rajapruek-greenlight/40 p-4 rounded-xl border border-emerald-100">
+                                                        <h4 className="font-bold text-rajapruek-greendark text-xs mb-2">จังหวัด/ภูมิภาคยอดนิยม (Province/District Tab)</h4>
+                                                        {targetGroupDataFiltered.regions.map((reg, i) => (
+                                                            <div key={i} className="flex justify-between text-xs text-gray-700 py-1">
+                                                                <span>{reg.name}</span>
+                                                                <span className="font-bold">{reg.percentage}%</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+
+                                                    {/* ประเทศ */}
+                                                    <div className="bg-rajapruek-greenlight/40 p-4 rounded-xl border border-emerald-100">
+                                                        <h4 className="font-bold text-rajapruek-greendark text-xs mb-2">ประเทศ (Country Tab)</h4>
+                                                        {targetGroupDataFiltered.countries.map((c, i) => (
+                                                            <div key={i} className="flex justify-between text-xs text-gray-700">
+                                                                <span>{c.name}</span>
+                                                                <span className="font-bold">{c.percentage}%</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                        </main>
+                    </div>
+
+                    {/* Database Section */}
+                    {activeTab !== "target" && (
+                        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 w-full">
+                            <div className="bg-white rounded-3xl border border-emerald-100 shadow-md botanical-glow overflow-hidden">
+                                
+                                <div className="p-6 bg-gradient-to-r from-rajapruek-greenlight/60 to-white border-b border-emerald-50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                    <div className="flex items-center space-x-3">
+                                        <div className="p-2 bg-rajapruek-green text-white rounded-xl">
+                                            <i data-lucide="database" className="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-extrabold text-rajapruek-greendark text-lg">
+                                                {activeTab === "reach" ? "ตารางข้อมูลการเข้าถึงรายเดือน (Reach Table)" : "ฐานข้อมูลรายเดือน (Follower Database)"}
+                                            </h3>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                                        <div className="relative flex-grow sm:flex-grow-0 sm:w-64">
+                                            <input 
+                                                type="text" 
+                                                placeholder="ค้นหาเดือนหรือปีงบ..." 
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                className="w-full bg-white border border-gray-200 text-gray-800 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-rajapruek-green transition duration-200"
+                                            />
+                                            <i data-lucide="search" className="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                                        </div>
+
+                                        <button 
+                                            onClick={exportToCSV}
+                                            className="bg-rajapruek-green hover:bg-rajapruek-greendark text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center justify-center space-x-2 transition duration-200 shadow-sm"
+                                        >
+                                            <i data-lucide="download" className="w-4 h-4"></i>
+                                            <span>ส่งออกตารางปีที่เลือกเป็น CSV</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="overflow-x-auto custom-scrollbar">
+                                    {activeTab === "reach" ? (
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-rajapruek-soft border-b border-gray-100 text-rajapruek-greendark text-[11px] font-bold uppercase tracking-wider">
+                                                    <th className="py-3.5 px-4">เดือน</th>
+                                                    <th className="py-3.5 px-4">ปีงบประมาณ</th>
+                                                    <th className="py-3.5 px-4 text-right">Facebook Reach</th>
+                                                    <th className="py-3.5 px-4 text-right">Instagram Reach</th>
+                                                    <th className="py-3.5 px-4 text-right">TikTok Views</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-50 text-xs text-gray-700">
+                                                {filteredTimelineData
+                                                    .filter(row => row.month.includes(searchTerm) || row.fy.includes(searchTerm))
+                                                    .map((row) => (
+                                                        <tr key={row.id} className="hover:bg-rajapruek-greenlight/20 transition-colors">
+                                                            <td className="py-3 px-4 font-bold text-gray-900">{row.month}</td>
+                                                            <td className="py-3 px-4">
+                                                                <span className="bg-rajapruek-greenlight text-rajapruek-green px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
+                                                                    ปีงบ {row.fy}
+                                                                </span>
+                                                            </td>
+                                                            <td className="py-3 px-4 text-right font-medium">{row.fb_reach ? row.fb_reach.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4 text-right font-medium text-pink-700">{row.ig_reach ? row.ig_reach.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4 text-right font-medium text-gray-900">{row.tiktok_views ? row.tiktok_views.toLocaleString() : "-"}</td>
+                                                        </tr>
+                                                    ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-rajapruek-soft border-b border-gray-100 text-rajapruek-greendark text-[11px] font-bold uppercase tracking-wider">
+                                                    <th className="py-3.5 px-4">เดือน</th>
+                                                    <th className="py-3.5 px-4">ปีงบประมาณ</th>
+                                                    <th className="py-3.5 px-4 text-right">Facebook RPRP</th>
+                                                    <th className="py-3.5 px-4 text-right">Instagram</th>
+                                                    <th className="py-3.5 px-4 text-right">Tiktok</th>
+                                                    <th className="py-3.5 px-4 text-right">LINE OA</th>
+                                                    <th className="py-3.5 px-4">หมายเหตุ</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-50 text-xs text-gray-700">
+                                                {filteredTimelineData
+                                                    .filter(row => {
+                                                        const matchSearch = row.month.includes(searchTerm) || row.fy.includes(searchTerm) || (row.note && row.note.includes(searchTerm));
+                                                        return matchSearch;
+                                                    })
+                                                    .map((row) => (
+                                                        <tr key={row.id} className="hover:bg-rajapruek-greenlight/20 transition-colors">
+                                                            <td className="py-3 px-4 font-bold text-gray-900">{row.month}</td>
+                                                            <td className="py-3 px-4">
+                                                                <span className="bg-rajapruek-greenlight text-rajapruek-green px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
+                                                                    ปีงบ {row.fy}
+                                                                </span>
+                                                            </td>
+                                                            <td className="py-3 px-4 text-right font-medium">{row.fb_rprp ? row.fb_rprp.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4 text-right font-medium text-pink-700">{row.ig ? row.ig.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4 text-right font-medium text-gray-900">{row.tiktok ? row.tiktok.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4 text-right font-medium text-emerald-600">{row.line_net ? row.line_net.toLocaleString() : "-"}</td>
+                                                            <td className="py-3 px-4">
+                                                                {row.note ? (
+                                                                    <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200/50 px-2 py-0.5 rounded font-medium">
+                                                                        {row.note}
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="text-gray-300">-</span>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Footer Attribution */}
+                    <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 text-center text-xs text-gray-400 space-y-1 w-full">
+                        <p>© 2026 อุทยานหลวงราชพฤกษ์. All Rights Reserved.</p>
+                        <p>ออกแบบและพัฒนาโมดูลสรุปสถิติเปรียบเทียบอย่างเป็นทางการจากข้อมูลเอกสาร "ข้อมูลสรุปผู้ติดตามและผลการดำเนินงานช่องทางสื่อออนไลน์ของอุทยานหลวงราชพฤกษ์"</p>
+                    </footer>
+
+                </div>
+            );
+        }
+
+        // Initialize React application
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // Refresh UI state & Re-initialize Lucide Icons
+        window.addEventListener('load', () => {
+            if(typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
-
-            // Finish
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = origText;
-
-            showToast('บันทึกข้อมูลแบบสำรวจเรียบร้อยแล้ว!', 'success');
-
-            // Reset form
-            document.getElementById('surveyForm').reset();
-            selectedSection2Count = 0;
-            selectedSection3Count = 0;
-            selectedSection5Count = 0;
-            document.getElementById('section2Counter').innerText = '0';
-            document.getElementById('section3Counter').innerText = '0';
-            document.getElementById('section5Counter').innerText = '0';
-            document.getElementById('workLocationOtherContainer').classList.add('hidden');
-            document.getElementById('workProblemOtherContainer').classList.add('hidden');
-            document.getElementById('trainerTopicContainer').classList.add('hidden');
-            renderSection3Options();
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Submissions local storage manager
-        function loadStoredSubmissions() {
-            const dataStr = localStorage.getItem('rpark_survey_submissions');
-            if (dataStr) {
-                try {
-                    localSubmissions = JSON.parse(dataStr);
-                } catch (e) {
-                    localSubmissions = [];
-                }
-            }
-        }
-
-        function getActiveDataSet() {
-            if (localSubmissions && localSubmissions.length > 0) {
-                document.getElementById('demoDataBadge').classList.add('hidden');
-                return localSubmissions;
-            } else {
-                document.getElementById('demoDataBadge').classList.remove('hidden');
-                return SAMPLE_DEMO_SUBMISSIONS;
-            }
-        }
-
-        function renderSubmissionTable() {
-            const dataset = getActiveDataSet();
-            const tbody = document.getElementById('submissionTableBody');
-            document.getElementById('submissionCount').innerText = dataset.length;
-
-            tbody.innerHTML = dataset.map((sub, idx) => `
-                <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition">
-                    <td class="p-3 font-semibold text-slate-500">${dataset.length - idx}</td>
-                    <td class="p-3 whitespace-nowrap text-slate-600">${sub.timestamp}</td>
-                    <td class="p-3 font-medium text-slate-800">${sub.workLocation}</td>
-                    <td class="p-3 text-slate-600">${sub.jobNature}</td>
-                    <td class="p-3 text-slate-600 max-w-xs truncate">${(sub.section2Topics || []).join(', ')}</td>
-                    <td class="p-3 text-slate-600 max-w-xs truncate">${(sub.section3Priority || []).join(', ')}</td>
-                    <td class="p-3 text-slate-600">${sub.trainerReadiness}</td>
-                </tr>
-            `).join('');
-        }
-
-        // Analytics Dashboard Calculations & Charts
-        function renderDashboard() {
-            const data = getActiveDataSet();
-            const totalCount = data.length;
-
-            document.getElementById('kpiTotalUsers').innerText = totalCount;
-
-            // Frequency counters
-            const sec2Counts = {};
-            const sec3Counts = {};
-            const sec5Counts = {};
-            let trainerInterested = 0;
-
-            data.forEach(sub => {
-                (sub.section2Topics || []).forEach(t => sec2Counts[t] = (sec2Counts[t] || 0) + 1);
-                (sub.section3Priority || []).forEach(t => sec3Counts[t] = (sec3Counts[t] || 0) + 1);
-                (sub.workProblems || []).forEach(t => sec5Counts[t] = (sec5Counts[t] || 0) + 1);
-
-                if (sub.trainerReadiness && sub.trainerReadiness.includes('สนใจ')) {
-                    trainerInterested++;
-                }
-            });
-
-            // Update KPI Cards
-            const sortedSec2 = Object.entries(sec2Counts).sort((a,b) => b[1] - a[1]);
-            const sortedSec3 = Object.entries(sec3Counts).sort((a,b) => b[1] - a[1]);
-
-            if (sortedSec2.length > 0) {
-                document.getElementById('kpiTopTopic').innerText = sortedSec2[0][0];
-                document.getElementById('kpiTopTopicSub').innerText = `เลือก ${sortedSec2[0][1]} จาก ${totalCount} คน (${Math.round(sortedSec2[0][1]/totalCount*100)}%)`;
-            }
-
-            if (sortedSec3.length > 0) {
-                document.getElementById('kpiTopUrgent').innerText = sortedSec3[0][0];
-                document.getElementById('kpiTopUrgentSub').innerText = `จำเป็นเร่งด่วน ${sortedSec3[0][1]} คน`;
-            }
-
-            const trainerPct = totalCount > 0 ? Math.round((trainerInterested / totalCount) * 100) : 0;
-            document.getElementById('kpiTrainerInterest').innerText = `${trainerPct}%`;
-            document.getElementById('kpiTrainerCount').innerText = `${trainerInterested} คน จากทั้งหมด ${totalCount} คน`;
-
-            // Draw Charts
-            buildChartSection2(sortedSec2.slice(0, 8));
-            buildChartSection3(sortedSec3.slice(0, 5));
-            buildChartSection5(sec5Counts);
-            buildChartSection7(data);
-        }
-
-        // Chart 1: Horizontal Bar Chart - Section 2 Top Topics
-        function buildChartSection2(sortedItems) {
-            const ctx = document.getElementById('chartSection2').getContext('2d');
-            if (chartInstances.sec2) chartInstances.sec2.destroy();
-
-            const labels = sortedItems.map(item => item[0]);
-            const values = sortedItems.map(item => item[1]);
-
-            chartInstances.sec2 = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'จำนวนคน (คน)',
-                        data: values,
-                        backgroundColor: '#16a34a',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { beginAtZero: true, ticks: { precision: 0 } }
-                    }
-                }
-            });
-        }
-
-        // Chart 2: Vertical Bar Chart - Section 3 Urgent Topics
-        function buildChartSection3(sortedItems) {
-            const ctx = document.getElementById('chartSection3').getContext('2d');
-            if (chartInstances.sec3) chartInstances.sec3.destroy();
-
-            const labels = sortedItems.map(item => item[0]);
-            const values = sortedItems.map(item => item[1]);
-
-            chartInstances.sec3 = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'ความจำเป็นเร่งด่วน',
-                        data: values,
-                        backgroundColor: '#d97706',
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0 } },
-                        x: { ticks: { font: { size: 10 } } }
-                    }
-                }
-            });
-        }
-
-        // Chart 3: Doughnut Chart - Section 4 Training Formats
-        function buildChartSection4(countsObj) {
-            const ctx = document.getElementById('chartSection4').getContext('2d');
-            if (chartInstances.sec4) chartInstances.sec4.destroy();
-
-            const labels = Object.keys(countsObj);
-            const values = Object.values(countsObj);
-
-            chartInstances.sec4 = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: values,
-                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#64748b']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
-                    }
-                }
-            });
-        }
-
-        // Chart 4: Horizontal Bar - Section 5 Work Problems
-        function buildChartSection5(countsObj) {
-            const ctx = document.getElementById('chartSection5').getContext('2d');
-            if (chartInstances.sec5) chartInstances.sec5.destroy();
-
-            const sorted = Object.entries(countsObj).sort((a,b) => b[1] - a[1]);
-            const labels = sorted.map(i => i[0]);
-            const values = sorted.map(i => i[1]);
-
-            chartInstances.sec5 = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'จำนวนครั้งที่พบปัญหา',
-                        data: values,
-                        backgroundColor: '#ef4444',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { beginAtZero: true, ticks: { precision: 0 } }
-                    }
-                }
-            });
-        }
-
-        function clearLocalData() {
-            if (confirm('คุณต้องการล้างข้อมูลการตอบแบบสำรวจในเครื่องทั้งหมดใช่หรือไม่?')) {
-                localSubmissions = [];
-                localStorage.removeItem('rpark_survey_submissions');
-                renderSubmissionTable();
-                renderDashboard();
-                showToast('ล้างข้อมูลเรียบร้อยแล้ว');
-            }
-        }
-
-        // CSV Exporter
-        function exportToCSV() {
-            const dataset = getActiveDataSet();
-            if (dataset.length === 0) {
-                showToast('ไม่มีข้อมูลสำหรับดาวน์โหลด', 'warning');
-                return;
-            }
-
-            const headers = [
-                "ประทับเวลา",
-                "จุดปฏิบัติงาน",
-                "ลักษณะงาน",
-                "หัวข้อที่เลือก (ส่วนที่ 2)",
-                "จำเป็นมากที่สุด (ส่วนที่ 3)",
-                "ปัญหาในการทำงาน (ส่วนที่ 4)",
-                "ข้อเสนอแนะหัวข้ออบรม",
-                "ข้อเสนอแนะพัฒนาบริการ",
-                "ความพร้อมวิทยากรภายใน",
-                "หัวข้อวิทยากร"
-            ];
-
-            const rows = dataset.map(s => [
-                `"${s.timestamp || ''}"`,
-                `"${(s.workLocation || '').replace(/"/g, '""')}"`,
-                `"${(s.jobNature || '').replace(/"/g, '""')}"`,
-                `"${(s.section2Topics || []).join('; ').replace(/"/g, '""')}"`,
-                `"${(s.section3Priority || []).join('; ').replace(/"/g, '""')}"`,
-                `"${(s.workProblems || []).join('; ').replace(/"/g, '""')}"`,
-                `"${(s.suggestionTopic || '').replace(/"/g, '""')}"`,
-                `"${(s.suggestionImprovement || '').replace(/"/g, '""')}"`,
-                `"${(s.trainerReadiness || '').replace(/"/g, '""')}"`,
-                `"${(s.trainerTopic || '').replace(/"/g, '""')}"`
-            ]);
-
-            const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `RoyalPark_Training_Needs_Survey_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        });
     </script>
 </body>
 </html>

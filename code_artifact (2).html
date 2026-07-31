@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบสำรวจความต้องการพัฒนาศักยภาพบุคลากร - อุทยานหลวงราชพฤกษ์</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Visual Dashboard Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        rpark: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            gold: '#d97706',
+                            goldlight: '#fef3c7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f4f7f5;
+        }
+        .bg-pattern {
+            background-color: #14532d;
+            background-image: radial-gradient(#16a34a 0.75px, transparent 0.75px), radial-gradient(#16a34a 0.75px, #14532d 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0,15px 15px;
+            opacity: 0.98;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .checkbox-custom:checked + label {
+            border-color: #16a34a;
+            background-color: #ffffff;
+        }
+        .checkbox-custom:checked + label > span:first-child {
+            border-color: #16a34a;
+            background-color: #16a34a;
+            color: #ffffff;
+        }
+        .checkbox-custom:checked + label > span:first-child i {
+            display: block !important;
+        }
+        .radio-custom:checked + label {
+            border-color: #16a34a;
+            background-color: #ffffff;
+            color: #15803d;
+            font-weight: 500;
+        }
+        .radio-custom:checked + label > span:first-child {
+            border-color: #16a34a;
+            background-color: #16a34a;
+            box-shadow: inset 0 0 0 3px #ffffff;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen pb-12">
+
+    <!-- Top Header Banner -->
+    <header class="bg-pattern text-white pt-8 pb-16 px-4 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-green-700/60 pb-6 mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-14 h-14 rounded-full bg-white text-rpark-800 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-amber-400">
+                        <i class="fa-solid font-bold fa-leaf text-rpark-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold tracking-wide">อุทยานหลวงราชพฤกษ์</h1>
+                        <p class="text-amber-300 text-sm font-light">Royal Park Rajapruek • Chiang Mai</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button type="button" onclick="openAdminModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl transition font-medium flex items-center shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-chart-pie mr-2"></i> ผลการสำรวจ & แดชบอร์ด
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center sm:text-left">
+                <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs font-medium px-3 py-1 rounded-full mb-3">
+                    กลุ่มส่งเสริมกิจการและหารายได้
+                </span>
+                <h2 class="text-xl sm:text-2xl font-bold leading-relaxed">
+                    แบบสำรวจความต้องการพัฒนาศักยภาพบุคลากร
+                </h2>
+                <p class="text-green-100 font-light text-sm mt-1">
+                    ด้านการให้บริการและจิตบริการ (Service & Service Mind)
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 -mt-8 relative z-20">
+        
+        <!-- Instruction Card -->
+        <div class="bg-white rounded-2xl p-6 mb-8 card-shadow border border-slate-100">
+            <div class="flex items-start space-x-3">
+                <div class="text-amber-500 text-xl mt-0.5"><i class="fa-solid fa-circle-info"></i></div>
+                <div>
+                    <h3 class="font-semibold text-slate-800 text-base mb-1">คำชี้แจง</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        แบบสำรวจฉบับนี้จัดทำขึ้นเพื่อสำรวจความต้องการในการพัฒนาความรู้ ทักษะ และสมรรถนะด้านการให้บริการของบุคลากรอุทยานหลวงราชพฤกษ์ โดยผลการสำรวจจะนำไปใช้ประกอบการจัดทำแผนพัฒนาบุคลากรและกำหนดหลักสูตรฝึกอบรมให้สอดคล้องกับลักษณะงานและความต้องการของบุคลากรในปีงบประมาณถัดไป
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Form -->
+        <form id="surveyForm" onsubmit="handleFormSubmit(event)">
+
+            <!-- Section 1: ข้อมูลทั่วไป -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">1</span>
+                    <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 1: ข้อมูลทั่วไป</h3>
+                </div>
+
+                <!-- 1.1 จุดปฏิบัติงาน -->
+                <div class="mb-6">
+                    <label class="block font-semibold text-slate-800 mb-2">
+                        1.1 จุดปฏิบัติงาน <span class="text-red-500">*</span> <span class="text-xs font-normal text-slate-500">(เลือก 1 ข้อ)</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workLocationContainer">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <div id="workLocationOtherContainer" class="mt-3 hidden">
+                        <input type="text" id="workLocationOther" placeholder="โปรดระบุจุดปฏิบัติงานอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
+                    </div>
+                </div>
+
+                <!-- 1.2 ลักษณะการปฏิบัติงาน -->
+                <div>
+                    <label class="block font-semibold text-slate-800 mb-2">
+                        1.2 ลักษณะการปฏิบัติงาน <span class="text-red-500">*</span> <span class="text-xs font-normal text-slate-500">(เลือก 1 ข้อ)</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <input type="radio" id="jobNature_1" name="jobNature" value="ให้บริการผู้เข้าชมโดยตรง" class="hidden radio-custom" required>
+                            <label for="jobNature_1" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
+                                ให้บริการผู้เข้าชมโดยตรง
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" id="jobNature_2" name="jobNature" value="สนับสนุนงานบริการ" class="hidden radio-custom">
+                            <label for="jobNature_2" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
+                                สนับสนุนงานบริการ
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" id="jobNature_3" name="jobNature" value="ทั้งให้บริการและสนับสนุนงานบริการ" class="hidden radio-custom">
+                            <label for="jobNature_3" class="flex items-center p-3 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                                <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex items-center justify-center text-xs"></span>
+                                ทั้งให้บริการและสนับสนุน
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: ความต้องการในการพัฒนาศักยภาพ -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">2</span>
+                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 2: ความต้องการในการพัฒนาศักยภาพ</h3>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto flex items-center space-x-1.5">
+                        <i class="fa-solid fa-list-check text-amber-600"></i>
+                        <span>เลือกได้ทุกหมวด (เลือกแล้ว <span id="section2Counter" class="font-bold text-rpark-700">0</span>/6 หมวด)</span>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-500 mb-6">
+                    * โปรดเลือกหัวข้อที่ท่านต้องการเข้ารับการอบรม <strong class="text-slate-700">(สามารถเลือกได้ทุกหมวด หมวดละ 1 ตัวเลือก)</strong>
+                </p>
+
+                <!-- Categorized Radios -->
+                <div class="space-y-6" id="section2Categories">
+                    <!-- Categories generated dynamically -->
+                </div>
+            </div>
+
+            <!-- Section 3: ความจำเป็นต่อการปฏิบัติงาน -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">3</span>
+                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 3: ความจำเป็นต่อการปฏิบัติงาน</h3>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto flex items-center space-x-1.5">
+                        <i class="fa-solid fa-star text-emerald-600"></i>
+                        <span>เลือกตรงนี้ <span id="section3Counter" class="font-bold text-rpark-700">0</span>/3 หัวข้อ</span>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 mb-4">
+                    จากหัวข้อทั้งหมด ให้ระบุ <strong class="text-rpark-800">3 หัวข้อที่ท่านเห็นว่ามีความจำเป็นต่อการปฏิบัติงานมากที่สุด</strong>
+                </p>
+
+                <div id="section3Container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Section 4: ปัญหาในการปฏิบัติงาน -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">4</span>
+                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 4: ปัญหาในการปฏิบัติงาน</h3>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium self-start sm:self-auto">
+                        เลือกได้ไม่เกิน 3 ข้อ (เลือกแล้ว <span id="section5Counter" class="font-bold text-rpark-700">0</span>/3)
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-500 mb-4">จากประสบการณ์การปฏิบัติงานของท่าน พบปัญหาด้านใดบ่อยที่สุด</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workProblemsContainer">
+                    <!-- Work Problems dynamically populated -->
+                </div>
+                <div id="workProblemOtherContainer" class="mt-3 hidden">
+                    <input type="text" id="workProblemOther" placeholder="โปรดระบุปัญหาอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
+                </div>
+            </div>
+
+            <!-- Section 5: ข้อเสนอแนะเพิ่มเติม -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-6 card-shadow border border-slate-100">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-8 h-8 rounded-lg bg-rpark-100 text-rpark-800 flex items-center justify-center font-bold text-sm">5</span>
+                    <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 5: ข้อเสนอแนะเพิ่มเติม</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="suggestionTopic" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            5.1 หัวข้ออบรมที่ท่านต้องการเพิ่มเติม
+                        </label>
+                        <textarea id="suggestionTopic" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุหัวข้อที่ต้องการอบรมเพิ่มเติม..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="suggestionImprovement" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            5.2 ข้อเสนอแนะในการพัฒนาการให้บริการของอุทยานหลวงราชพฤกษ์
+                        </label>
+                        <textarea id="suggestionImprovement" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุข้อเสนอแนะในการพัฒนาการให้บริการ..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: ความพร้อมในการเป็นวิทยากรภายในองค์กร -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 mb-8 card-shadow border border-slate-100">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm">6</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">ส่วนที่ 6: ความพร้อมในการเป็นวิทยากรภายในองค์กร</h3>
+                        <p class="text-xs text-amber-600 font-medium">Internal Trainer Development</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <input type="radio" id="trainer_1" name="trainerReadiness" value="มีความสนใจเป็นวิทยากรหรือผู้ถ่ายทอดความรู้ในหัวข้อที่ตนเองเชี่ยวชาญ" class="hidden radio-custom" onchange="toggleTrainerTopic(true)">
+                        <label for="trainer_1" class="flex items-center p-3.5 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-3 flex items-center justify-center text-xs"></span>
+                            มีความสนใจเป็นวิทยากรหรือผู้ถ่ายทอดความรู้ในหัวข้อที่ตนเองเชี่ยวชาญ
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="trainer_2" name="trainerReadiness" value="สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม" class="hidden radio-custom" onchange="toggleTrainerTopic(true)">
+                        <label for="trainer_2" class="flex items-center p-3.5 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-3 flex items-center justify-center text-xs"></span>
+                            สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="trainer_3" name="trainerReadiness" value="ยังไม่สนใจในขณะนี้" class="hidden radio-custom" onchange="toggleTrainerTopic(false)">
+                        <label for="trainer_3" class="flex items-center p-3.5 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-3 flex items-center justify-center text-xs"></span>
+                            ยังไม่สนใจในขณะนี้
+                        </label>
+                    </div>
+
+                    <div id="trainerTopicContainer" class="mt-4 pt-3 border-t border-slate-100 hidden">
+                        <label for="trainerTopic" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            หากมีความสนใจ โปรดระบุหัวข้อที่ท่านมีความเชี่ยวชาญและสามารถถ่ายทอดได้:
+                        </label>
+                        <input type="text" id="trainerTopic" placeholder="เช่น การบริการลูกค้าชาวต่างชาติ, การใช้อุปกรณ์นำชม, การดูแลสวน..." class="w-full p-3 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button Area -->
+            <div class="flex flex-col items-center justify-center space-y-4">
+                <button type="submit" id="submitBtn" class="w-full sm:w-auto px-10 py-4 bg-rpark-700 hover:bg-rpark-800 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-3">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>ส่งแบบสำรวจ</span>
+                </button>
+                <p class="text-xs text-slate-500 flex items-center">
+                    <i class="fa-solid fa-shield-halved text-rpark-600 mr-1.5"></i> ข้อมูลของท่านจะถูกเก็บเป็นความลับเพื่อใช้พัฒนาบุคลากรเท่านั้น
+                </p>
+            </div>
+        </form>
+    </main>
+
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700">
+            <span id="toastIcon" class="text-emerald-400 text-lg"><i class="fa-solid fa-circle-check"></i></span>
+            <span id="toastMessage" class="text-sm font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+        </div>
+    </div>
+
+    <!-- Admin / Submissions View & Dashboard Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+        <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] overflow-hidden card-shadow flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-b border-slate-100 bg-slate-50/80 gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-rpark-100 text-rpark-800 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">สรุปผลการสำรวจและประเมินผล</h3>
+                        <p class="text-xs text-slate-500">รายงานข้อมูลความต้องการพัฒนาศักยภาพบุคลากร (<span id="submissionCount">0</span> รายการตอบกลับ)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
+                    <!-- Tab Toggle Buttons -->
+                    <div class="bg-slate-200/80 p-1 rounded-xl flex space-x-1 text-xs font-medium">
+                        <button type="button" id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold">
+                            <i class="fa-solid fa-chart-pie mr-1.5"></i> แดชบอร์ดสรุปผล
+                        </button>
+                        <button type="button" id="tabBtnTable" onclick="switchAdminTab('table')" class="px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-table-list mr-1.5"></i> ตารางข้อมูล
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center space-x-1 shadow">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span class="hidden sm:inline">ดาวน์โหลด CSV</span>
+                        </button>
+                        <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1 leading-none">&times;</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-100/60">
+                
+                <!-- TAB 1: DASHBOARD ANALYTICS VIEW -->
+                <div id="dashboardView" class="space-y-6">
+                    <!-- Metric KPI Cards Row -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
+                                <span>ผู้ตอบแบบสำรวจ</span>
+                                <i class="fa-solid fa-users text-rpark-600"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-slate-800" id="kpiTotalUsers">0</div>
+                            <div class="text-[11px] text-slate-400 mt-1">บุคลากรผู้ให้ข้อมูล</div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
+                                <span>ความต้องการพัฒนาสูงสุด</span>
+                                <i class="fa-solid fa-fire text-amber-500"></i>
+                            </div>
+                            <div class="text-sm font-bold text-rpark-800 truncate" id="kpiTopTopic">-</div>
+                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTopTopicSub">หัวข้อที่ถูกเลือกมากที่สุด</div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
+                                <span>ความจำเป็นเร่งด่วนอันดับ 1</span>
+                                <i class="fa-solid fa-star text-amber-500"></i>
+                            </div>
+                            <div class="text-sm font-bold text-emerald-800 truncate" id="kpiTopUrgent">-</div>
+                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTopUrgentSub">จำเป็นต่อการทำงานมากที่สุด</div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">
+                                <span>สนใจเป็นวิทยากรภายใน</span>
+                                <i class="fa-solid fa-chalkboard-user text-indigo-500"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600" id="kpiTrainerInterest">0%</div>
+                            <div class="text-[11px] text-slate-400 mt-1" id="kpiTrainerCount">0 คน มีความสนใจ</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 1 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <!-- Chart 1: Top Need Topics (Section 2) -->
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
+                                <i class="fa-solid fa-chart-bar text-rpark-600 mr-2"></i>
+                                Top 8 หัวข้อความต้องการพัฒนาศักยภาพ (ส่วนที่ 2)
+                            </h4>
+                            <p class="text-xs text-slate-500 mb-4">จัดอันดับตามจำนวนบุคลากรที่ต้องการเข้ารับการอบรมมากที่สุด</p>
+                            <div class="relative h-64">
+                                <canvas id="chartSection2"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Urgent Priority Topics (Section 3) -->
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
+                                <i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>
+                                Top 5 หัวข้อที่มีความจำเป็นต่อการทำงานมากที่สุด (ส่วนที่ 3)
+                            </h4>
+                            <p class="text-xs text-slate-500 mb-4">หัวข้อสำคัญวิกฤตที่ต้องจัดหลักสูตรอบรมอย่างเร่งด่วน</p>
+                            <div class="relative h-64">
+                                <canvas id="chartSection3"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 2 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Chart 3: Common Work Problems -->
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
+                                <i class="fa-solid fa-bug text-red-500 mr-2"></i>
+                                ปัญหาในการปฏิบัติงานที่พบบ่อย (ส่วนที่ 4)
+                            </h4>
+                            <p class="text-xs text-slate-500 mb-3">อุปสรรคสำคัญในการให้บริการผู้เข้าชม</p>
+                            <div class="relative h-56">
+                                <canvas id="chartSection5"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4: Internal Trainer Readiness -->
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center">
+                                <i class="fa-solid fa-user-graduate text-indigo-600 mr-2"></i>
+                                ความพร้อมเป็นวิทยากรภายใน (ส่วนที่ 6)
+                            </h4>
+                            <p class="text-xs text-slate-500 mb-3">ศักยภาพในการถ่ายทอดความรู้ภายในองค์กร</p>
+                            <div class="relative h-56 flex items-center justify-center">
+                                <canvas id="chartSection7"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DETAILED DATA TABLE VIEW -->
+                <div id="tableView" class="hidden space-y-4">
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-sm">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-semibold whitespace-nowrap">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">เวลาที่ส่ง</th>
+                                    <th class="p-3">จุดปฏิบัติงาน</th>
+                                    <th class="p-3">ลักษณะงาน</th>
+                                    <th class="p-3">หัวข้อการพัฒนาที่เลือก (ส่วนที่ 2)</th>
+                                    <th class="p-3">จำเป็นมากที่สุด (ส่วนที่ 3)</th>
+                                    <th class="p-3">วิทยากรภายใน</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissionTableBody">
+                                <!-- Filled dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-100 bg-white flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
+                <span id="demoDataBadge" class="hidden text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
+                    <i class="fa-solid fa-flask mr-1"></i> แสดงข้อมูลตัวอย่างสาธิต (เมื่อยังไม่มีผู้ตอบจริง)
+                </span>
+                <button type="button" onclick="clearLocalData()" class="text-red-500 hover:underline ml-auto">ล้างข้อมูลสำรองในเครื่อง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Code -->
+    <script>
+        // Form Data Constants
+        const WORK_LOCATIONS = [
+            "อาคารบริการข้อมูลและอำนวยความสะดวก (GECC)",
+            "อาคารจำหน่ายบัตร",
+            "ประตูทางเข้าอุทยานหลวงราชพฤกษ์",
+            "อาคารรถไฟฟ้าชมสวน / ขณะขับรถนำชม",
+            "ร้านกาแฟ Koonie Cafe",
+            "ร้านจำหน่ายสินค้าที่ระลึก",
+            "จุดบริการเช่าจักรยาน",
+            "งานรับคณะ",
+            "งานกิจกรรม",
+            "งาน MOU",
+            "ร้านจำหน่ายขนมและเครื่องดื่ม",
+            "ประตูลานจอดรถ",
+            "โรงแรมราชพฤกษ์ เพลซ",
+            "ส่วนงานเช่าพื้นที่",
+            "อื่น ๆ"
+        ];
+
+        const SECTION_2_TOPICS = {
+            "ก. ด้านการให้บริการ": [
+                "การสร้างจิตบริการ (Service Mind)",
+                "บุคลิกภาพในการให้บริการ",
+                "มารยาทและการสื่อสารกับผู้รับบริการ",
+                "การสร้างความประทับใจแก่ผู้รับบริการ",
+                "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ",
+                "การดูแลผู้สูงอายุ เด็ก และผู้พิการ"
+            ],
+            "ข. ด้านการปฏิบัติงาน": [
+                "การแนะนำเส้นทางและจุดท่องเที่ยว",
+                "การถ่ายภาพให้ผู้เข้าชม",
+                "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)",
+                "การสร้างประสบการณ์ที่ดีแก่ผู้เข้าชม",
+                "การทำงานเป็นมาตรฐานเดียวกัน"
+            ],
+            "ค. ด้านการจัดการปัญหา": [
+                "การรับข้อร้องเรียน",
+                "การแก้ไขปัญหาเฉพาะหน้า",
+                "การจัดการสถานการณ์เร่งด่วน",
+                "การสื่อสารเมื่อเกิดเหตุไม่คาดคิด",
+                "การควบคุมอารมณ์ในการปฏิบัติงาน"
+            ],
+            "ง. ด้านภาษา": [
+                "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ",
+                "ภาษาจีนเบื้องต้น"
+            ],
+            "จ. ด้านเทคโนโลยี": [
+                "การใช้ AI ช่วยในการทำงาน",
+                "การใช้ Google Workspace",
+                "Canva สำหรับงานบริการและประชาสัมพันธ์",
+                "การใช้สื่อออนไลน์ในการให้ข้อมูล"
+            ],
+            "ฉ. ด้านการพัฒนาตนเอง": [
+                "การทำงานเป็นทีม",
+                "การสร้างแรงจูงใจในการทำงาน",
+                "การบริหารความเครียด",
+                "การสร้างความสุขในการทำงาน",
+                "การพัฒนาความคิดเชิงบวก"
+            ]
+        };
+
+        const WORK_PROBLEMS = [
+            "นักท่องเที่ยวสอบถามข้อมูลจำนวนมาก",
+            "การให้ข้อมูลไม่ตรงกัน",
+            "การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ",
+            "การรับเรื่องร้องเรียน",
+            "การประสานงานระหว่างหน่วยงาน",
+            "การจัดการนักท่องเที่ยวในช่วงที่มีผู้ใช้บริการจำนวนมาก",
+            "การใช้อุปกรณ์หรือระบบในการให้บริการ",
+            "ยังไม่มีปัญหาที่พบเป็นประจำ",
+            "อื่น ๆ"
+        ];
+
+        // Sample Mock Data for Dashboard Initialization
+        const SAMPLE_DEMO_SUBMISSIONS = [
+            {
+                timestamp: "31/7/2026, 09:15:20",
+                workLocation: "อาคารบริการข้อมูลและอำนวยความสะดวก (GECC)",
+                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
+                section2Topics: ["การสร้างจิตบริการ (Service Mind)", "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ", "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การแก้ไขปัญหาเฉพาะหน้า", "การทำงานเป็นทีม"],
+                section3Priority: ["ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การสร้างจิตบริการ (Service Mind)", "การแก้ไขปัญหาเฉพาะหน้า"],
+                workProblems: ["การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ", "นักท่องเที่ยวสอบถามข้อมูลจำนวนมาก"],
+                trainerReadiness: "มีความสนใจเป็นวิทยากรหรือผู้ถ่ายทอดความรู้ในหัวข้อที่ตนเองเชี่ยวชาญ",
+                trainerTopic: "การให้ข้อมูลสถานที่ท่องเที่ยวและการต้อนรับชาวต่างชาติ"
+            },
+            {
+                timestamp: "31/7/2026, 10:02:11",
+                workLocation: "อาคารรถไฟฟ้าชมสวน / ขณะขับรถนำชม",
+                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
+                section2Topics: ["บุคลิกภาพในการให้บริการ", "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การแก้ไขปัญหาเฉพาะหน้า"],
+                section3Priority: ["การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "การแก้ไขปัญหาเฉพาะหน้า", "บุคลิกภาพในการให้บริการ"],
+                workProblems: ["การใช้อุปกรณ์หรือระบบในการให้บริการ", "การจัดการนักท่องเที่ยวในช่วงที่มีผู้ใช้บริการจำนวนมาก"],
+                trainerReadiness: "สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม",
+                trainerTopic: "เทคนิคการขับรถนำชมและการบรรยาย"
+            },
+            {
+                timestamp: "31/7/2026, 11:30:45",
+                workLocation: "อาคารจำหน่ายบัตร",
+                jobNature: "ให้บริการผู้เข้าชมโดยตรง",
+                section2Topics: ["การรับข้อร้องเรียน", "การสื่อสารเมื่อเกิดเหตุไม่คาดคิด", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
+                section3Priority: ["การรับข้อร้องเรียน", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
+                workProblems: ["การรับเรื่องร้องเรียน", "การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ"],
+                trainerReadiness: "ยังไม่สนใจในขณะนี้",
+                trainerTopic: ""
+            }
+        ];
+
+        // State Tracking
+        let selectedSection2Count = 0;
+        let selectedSection3Count = 0;
+        let selectedSection5Count = 0;
+        let localSubmissions = [];
+        let chartInstances = {};
+
+        // นำ Web App URL ที่ได้จาก Google Apps Script มาใส่ตรงนี้เพื่อส่งข้อมูลลง Google Sheets
+        const GOOGLE_SCRIPT_URL = ""; 
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderWorkLocations();
+            renderSection2Categories();
+            renderWorkProblems();
+            renderSection3Options();
+            loadStoredSubmissions();
+        });
+
+        // Render 1.1 Work Locations
+        function renderWorkLocations() {
+            const container = document.getElementById('workLocationContainer');
+            container.innerHTML = WORK_LOCATIONS.map((loc, idx) => `
+                <div>
+                    <input type="radio" id="loc_${idx}" name="workLocation" value="${loc}" class="hidden radio-custom" onchange="handleLocationChange(this)" required>
+                    <label for="loc_${idx}" class="flex items-center p-3 text-xs sm:text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition h-full">
+                        <span class="w-4 h-4 rounded-full border border-slate-300 mr-2.5 flex-shrink-0 flex items-center justify-center text-xs"></span>
+                        <span class="truncate">${loc}</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function handleLocationChange(radio) {
+            const otherContainer = document.getElementById('workLocationOtherContainer');
+            if (radio.value === 'อื่น ๆ') {
+                otherContainer.classList.remove('hidden');
+                document.getElementById('workLocationOther').setAttribute('required', 'true');
+            } else {
+                otherContainer.classList.add('hidden');
+                document.getElementById('workLocationOther').removeAttribute('required');
+            }
+        }
+
+        // Render Section 2 Categories
+        function renderSection2Categories() {
+            const container = document.getElementById('section2Categories');
+            let categoryHtml = '';
+
+            Object.entries(SECTION_2_TOPICS).forEach(([categoryName, topics], catIdx) => {
+                const groupName = `sec2_cat_${catIdx}`;
+                categoryHtml += `
+                    <div class="bg-slate-50/70 p-4 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-rpark-800 text-sm flex items-center">
+                                <i class="fa-solid fa-folder text-amber-500 mr-2"></i> ${categoryName}
+                            </h4>
+                            <span class="text-[11px] text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-full">เลือกได้ 1 ข้อ</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            ${topics.map((topic, topicIdx) => {
+                                const id = `sec2_${catIdx}_${topicIdx}`;
+                                return `
+                                    <div>
+                                        <input type="radio" id="${id}" name="${groupName}" value="${topic}" class="hidden radio-custom sec2-radio" onchange="handleSection2Change()">
+                                        <label for="${id}" class="flex items-start p-2.5 text-xs rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-100 transition">
+                                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-xs"></span>
+                                            <span>${topic}</span>
+                                        </label>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = categoryHtml;
+        }
+
+        function handleSection2Change() {
+            const checkedRadios = document.querySelectorAll('.sec2-radio:checked');
+            selectedSection2Count = checkedRadios.length;
+
+            document.getElementById('section2Counter').innerText = selectedSection2Count;
+            renderSection3Options();
+        }
+
+        // Render Section 3 Priority Selection
+        function renderSection3Options() {
+            const container = document.getElementById('section3Container');
+            const sec2Checked = Array.from(document.querySelectorAll('.sec2-radio:checked')).map(cb => cb.value);
+
+            let allTopics = [];
+            if (sec2Checked.length >= 3) {
+                allTopics = sec2Checked;
+            } else {
+                Object.values(SECTION_2_TOPICS).forEach(list => {
+                    allTopics = allTopics.concat(list);
+                });
+            }
+
+            container.innerHTML = allTopics.map((topic, idx) => `
+                <div>
+                    <input type="checkbox" id="sec3_${idx}" value="${topic}" class="hidden checkbox-custom sec3-checkbox" onchange="handleSection3Change(this)">
+                    <label for="sec3_${idx}" class="flex items-start p-3 text-xs rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-100 transition h-full">
+                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
+                            <i class="fa-solid fa-check hidden"></i>
+                        </span>
+                        <span>${topic}</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function handleSection3Change(checkbox) {
+            const checkedBoxes = document.querySelectorAll('.sec3-checkbox:checked');
+            selectedSection3Count = checkedBoxes.length;
+
+            if (selectedSection3Count > 3) {
+                checkbox.checked = false;
+                showToast('โปรดเลือกความจำเป็นมากที่สุดเพียง 3 หัวข้อ', 'warning');
+                return;
+            }
+
+            document.getElementById('section3Counter').innerText = selectedSection3Count;
+        }
+
+        // Render Section 4 Work Problems
+        function renderWorkProblems() {
+            const container = document.getElementById('workProblemsContainer');
+            container.innerHTML = WORK_PROBLEMS.map((prob, idx) => `
+                <div>
+                    <input type="checkbox" id="prob_${idx}" value="${prob}" class="hidden checkbox-custom sec5-checkbox" onchange="handleSection5Change(this)">
+                    <label for="prob_${idx}" class="flex items-start p-3 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition h-full">
+                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 mt-0.5 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
+                            <i class="fa-solid fa-check hidden"></i>
+                        </span>
+                        <span>${prob}</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function handleSection5Change(checkbox) {
+            const checkedBoxes = document.querySelectorAll('.sec5-checkbox:checked');
+            selectedSection5Count = checkedBoxes.length;
+
+            if (selectedSection5Count > 3) {
+                checkbox.checked = false;
+                showToast('เลือกปัญหาได้ไม่เกิน 3 ข้อ', 'warning');
+                return;
+            }
+
+            document.getElementById('section5Counter').innerText = selectedSection5Count;
+
+            const otherContainer = document.getElementById('workProblemOtherContainer');
+            const isOtherChecked = Array.from(checkedBoxes).some(cb => cb.value === 'อื่น ๆ');
+            if (isOtherChecked) {
+                otherContainer.classList.remove('hidden');
+            } else {
+                otherContainer.classList.add('hidden');
+            }
+        }
+
+        function toggleTrainerTopic(show) {
+            const container = document.getElementById('trainerTopicContainer');
+            if (show) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.innerText = message;
+
+            if (type === 'warning') {
+                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
+            } else if (type === 'error') {
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-400"></i>';
+            } else {
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        // Modal Controls & Dashboard Renderer
+        function openAdminModal() {
+            renderSubmissionTable();
+            renderDashboard();
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function switchAdminTab(tab) {
+            const dashView = document.getElementById('dashboardView');
+            const tableView = document.getElementById('tableView');
+            const btnDash = document.getElementById('tabBtnDashboard');
+            const btnTable = document.getElementById('tabBtnTable');
+
+            if (tab === 'dashboard') {
+                dashView.classList.remove('hidden');
+                tableView.classList.add('hidden');
+                btnDash.className = "px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold";
+                btnTable.className = "px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900";
+            } else {
+                dashView.classList.add('hidden');
+                tableView.classList.remove('hidden');
+                btnDash.className = "px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900";
+                btnTable.className = "px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold";
+            }
+        }
+
+        // Form Submission Logic
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Validate Section 1
+            const selectedLocRadio = document.querySelector('input[name="workLocation"]:checked');
+            if (!selectedLocRadio) {
+                showToast('โปรดเลือกจุดปฏิบัติงานในส่วนที่ 1', 'warning');
+                return;
+            }
+            let workLocation = selectedLocRadio.value;
+            if (workLocation === 'อื่น ๆ') {
+                workLocation = 'อื่น ๆ: ' + document.getElementById('workLocationOther').value.trim();
+            }
+
+            const selectedJobRadio = document.querySelector('input[name="jobNature"]:checked');
+            if (!selectedJobRadio) {
+                showToast('โปรดเล็ือกลักษณะการปฏิบัติงานในส่วนที่ 1', 'warning');
+                return;
+            }
+            const jobNature = selectedJobRadio.value;
+
+            // Section 2
+            const section2Topics = Array.from(document.querySelectorAll('.sec2-radio:checked')).map(cb => cb.value);
+            if (section2Topics.length === 0) {
+                showToast('โปรดเลือกหัวข้อความต้องการพัฒนาศักยภาพอย่างน้อย 1 หมวด (ส่วนที่ 2)', 'warning');
+                return;
+            }
+
+            // Section 3
+            const section3Priority = Array.from(document.querySelectorAll('.sec3-checkbox:checked')).map(cb => cb.value);
+            if (section3Priority.length !== 3) {
+                showToast('โปรดเลือก 3 หัวข้อที่มีความจำเป็นต่อการปฏิบัติงานมากที่สุดในส่วนที่ 3', 'warning');
+                return;
+            }
+
+            // Section 4 (Problems)
+            let workProblems = Array.from(document.querySelectorAll('.sec5-checkbox:checked')).map(cb => cb.value);
+            if (workProblems.includes('อื่น ๆ')) {
+                const probOther = document.getElementById('workProblemOther').value.trim();
+                workProblems = workProblems.map(p => p === 'อื่น ๆ' ? `อื่น ๆ: ${probOther}` : p);
+            }
+
+            // Section 5 (Suggestions)
+            const suggestionTopic = document.getElementById('suggestionTopic').value.trim();
+            const suggestionImprovement = document.getElementById('suggestionImprovement').value.trim();
+
+            // Section 6 (Internal Trainer)
+            const selectedTrainerRadio = document.querySelector('input[name="trainerReadiness"]:checked');
+            const trainerReadiness = selectedTrainerRadio ? selectedTrainerRadio.value : "ไม่ได้ระบุ";
+            const trainerTopic = document.getElementById('trainerTopic').value.trim();
+
+            const formData = {
+                timestamp: new Date().toLocaleString('th-TH'),
+                workLocation,
+                jobNature,
+                section2Topics,
+                section3Priority,
+                workProblems,
+                suggestionTopic,
+                suggestionImprovement,
+                trainerReadiness,
+                trainerTopic
+            };
+
+            // UI Loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const origText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังส่งข้อมูล...';
+
+            // 1. บันทึกลง LocalStorage สำรองไว้ในเครื่องผู้ตอบ
+            localSubmissions.unshift(formData);
+            localStorage.setItem('rpark_survey_submissions', JSON.stringify(localSubmissions));
+
+            // 2. ส่งข้อมูลไปยัง Google Sheets แบบ Real-time (หากตั้งค่า GOOGLE_SCRIPT_URL ไว้)
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== "") {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(formData)
+                    });
+                } catch (err) {
+                    console.error("Error submitting to Google Sheets:", err);
+                }
+            }
+
+            // Finish
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+
+            showToast('บันทึกข้อมูลแบบสำรวจเรียบร้อยแล้ว!', 'success');
+
+            // Reset form
+            document.getElementById('surveyForm').reset();
+            selectedSection2Count = 0;
+            selectedSection3Count = 0;
+            selectedSection5Count = 0;
+            document.getElementById('section2Counter').innerText = '0';
+            document.getElementById('section3Counter').innerText = '0';
+            document.getElementById('section5Counter').innerText = '0';
+            document.getElementById('workLocationOtherContainer').classList.add('hidden');
+            document.getElementById('workProblemOtherContainer').classList.add('hidden');
+            document.getElementById('trainerTopicContainer').classList.add('hidden');
+            renderSection3Options();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Submissions local storage manager
+        function loadStoredSubmissions() {
+            const dataStr = localStorage.getItem('rpark_survey_submissions');
+            if (dataStr) {
+                try {
+                    localSubmissions = JSON.parse(dataStr);
+                } catch (e) {
+                    localSubmissions = [];
+                }
+            }
+        }
+
+        function getActiveDataSet() {
+            if (localSubmissions && localSubmissions.length > 0) {
+                document.getElementById('demoDataBadge').classList.add('hidden');
+                return localSubmissions;
+            } else {
+                document.getElementById('demoDataBadge').classList.remove('hidden');
+                return SAMPLE_DEMO_SUBMISSIONS;
+            }
+        }
+
+        function renderSubmissionTable() {
+            const dataset = getActiveDataSet();
+            const tbody = document.getElementById('submissionTableBody');
+            document.getElementById('submissionCount').innerText = dataset.length;
+
+            tbody.innerHTML = dataset.map((sub, idx) => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition">
+                    <td class="p-3 font-semibold text-slate-500">${dataset.length - idx}</td>
+                    <td class="p-3 whitespace-nowrap text-slate-600">${sub.timestamp}</td>
+                    <td class="p-3 font-medium text-slate-800">${sub.workLocation}</td>
+                    <td class="p-3 text-slate-600">${sub.jobNature}</td>
+                    <td class="p-3 text-slate-600 max-w-xs truncate">${(sub.section2Topics || []).join(', ')}</td>
+                    <td class="p-3 text-slate-600 max-w-xs truncate">${(sub.section3Priority || []).join(', ')}</td>
+                    <td class="p-3 text-slate-600">${sub.trainerReadiness}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Analytics Dashboard Calculations & Charts
+        function renderDashboard() {
+            const data = getActiveDataSet();
+            const totalCount = data.length;
+
+            document.getElementById('kpiTotalUsers').innerText = totalCount;
+
+            // Frequency counters
+            const sec2Counts = {};
+            const sec3Counts = {};
+            const sec5Counts = {};
+            let trainerInterested = 0;
+
+            data.forEach(sub => {
+                (sub.section2Topics || []).forEach(t => sec2Counts[t] = (sec2Counts[t] || 0) + 1);
+                (sub.section3Priority || []).forEach(t => sec3Counts[t] = (sec3Counts[t] || 0) + 1);
+                (sub.workProblems || []).forEach(t => sec5Counts[t] = (sec5Counts[t] || 0) + 1);
+
+                if (sub.trainerReadiness && sub.trainerReadiness.includes('สนใจ')) {
+                    trainerInterested++;
+                }
+            });
+
+            // Update KPI Cards
+            const sortedSec2 = Object.entries(sec2Counts).sort((a,b) => b[1] - a[1]);
+            const sortedSec3 = Object.entries(sec3Counts).sort((a,b) => b[1] - a[1]);
+
+            if (sortedSec2.length > 0) {
+                document.getElementById('kpiTopTopic').innerText = sortedSec2[0][0];
+                document.getElementById('kpiTopTopicSub').innerText = `เลือก ${sortedSec2[0][1]} จาก ${totalCount} คน (${Math.round(sortedSec2[0][1]/totalCount*100)}%)`;
+            }
+
+            if (sortedSec3.length > 0) {
+                document.getElementById('kpiTopUrgent').innerText = sortedSec3[0][0];
+                document.getElementById('kpiTopUrgentSub').innerText = `จำเป็นเร่งด่วน ${sortedSec3[0][1]} คน`;
+            }
+
+            const trainerPct = totalCount > 0 ? Math.round((trainerInterested / totalCount) * 100) : 0;
+            document.getElementById('kpiTrainerInterest').innerText = `${trainerPct}%`;
+            document.getElementById('kpiTrainerCount').innerText = `${trainerInterested} คน จากทั้งหมด ${totalCount} คน`;
+
+            // Draw Charts
+            buildChartSection2(sortedSec2.slice(0, 8));
+            buildChartSection3(sortedSec3.slice(0, 5));
+            buildChartSection5(sec5Counts);
+            buildChartSection7(data);
+        }
+
+        // Chart 1: Horizontal Bar Chart - Section 2 Top Topics
+        function buildChartSection2(sortedItems) {
+            const ctx = document.getElementById('chartSection2').getContext('2d');
+            if (chartInstances.sec2) chartInstances.sec2.destroy();
+
+            const labels = sortedItems.map(item => item[0]);
+            const values = sortedItems.map(item => item[1]);
+
+            chartInstances.sec2 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'จำนวนคน (คน)',
+                        data: values,
+                        backgroundColor: '#16a34a',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Vertical Bar Chart - Section 3 Urgent Topics
+        function buildChartSection3(sortedItems) {
+            const ctx = document.getElementById('chartSection3').getContext('2d');
+            if (chartInstances.sec3) chartInstances.sec3.destroy();
+
+            const labels = sortedItems.map(item => item[0]);
+            const values = sortedItems.map(item => item[1]);
+
+            chartInstances.sec3 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'ความจำเป็นเร่งด่วน',
+                        data: values,
+                        backgroundColor: '#d97706',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } },
+                        x: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // Chart 3: Horizontal Bar - Section 4 Work Problems
+        function buildChartSection5(countsObj) {
+            const ctx = document.getElementById('chartSection5').getContext('2d');
+            if (chartInstances.sec5) chartInstances.sec5.destroy();
+
+            const sorted = Object.entries(countsObj).sort((a,b) => b[1] - a[1]);
+            const labels = sorted.map(i => i[0]);
+            const values = sorted.map(i => i[1]);
+
+            chartInstances.sec5 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'จำนวนครั้งที่พบปัญหา',
+                        data: values,
+                        backgroundColor: '#ef4444',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        // Chart 4: Pie Chart - Section 6 Internal Trainer
+        function buildChartSection7(data) {
+            const ctx = document.getElementById('chartSection7').getContext('2d');
+            if (chartInstances.sec7) chartInstances.sec7.destroy();
+
+            const categories = {
+                "มีความสนใจ": 0,
+                "สนใจหากได้รับการพัฒนา": 0,
+                "ยังไม่สนใจ / ไม่เลือก": 0
+            };
+
+            data.forEach(sub => {
+                const text = sub.trainerReadiness || "";
+                if (text.includes("มีความสนใจเป็นวิทยากร")) {
+                    categories["มีความสนใจ"]++;
+                } else if (text.includes("ได้รับการพัฒนา")) {
+                    categories["สนใจหากได้รับการพัฒนา"]++;
+                } else {
+                    categories["ยังไม่สนใจ / ไม่เลือก"]++;
+                }
+            });
+
+            chartInstances.sec7 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        data: Object.values(categories),
+                        backgroundColor: ['#6366f1', '#38bdf8', '#cbd5e1']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function clearLocalData() {
+            if (confirm('คุณต้องการล้างข้อมูลการตอบแบบสำรวจในเครื่องทั้งหมดใช่หรือไม่?')) {
+                localSubmissions = [];
+                localStorage.removeItem('rpark_survey_submissions');
+                renderSubmissionTable();
+                renderDashboard();
+                showToast('ล้างข้อมูลเรียบร้อยแล้ว');
+            }
+        }
+
+        // CSV Exporter
+        function exportToCSV() {
+            const dataset = getActiveDataSet();
+            if (dataset.length === 0) {
+                showToast('ไม่มีข้อมูลสำหรับดาวน์โหลด', 'warning');
+                return;
+            }
+
+            const headers = [
+                "ประทับเวลา",
+                "จุดปฏิบัติงาน",
+                "ลักษณะงาน",
+                "หัวข้อที่เลือก (ส่วนที่ 2)",
+                "จำเป็นมากที่สุด (ส่วนที่ 3)",
+                "ปัญหาในการทำงาน (ส่วนที่ 4)",
+                "ข้อเสนอแนะหัวข้ออบรม",
+                "ข้อเสนอแนะพัฒนาบริการ",
+                "ความพร้อมวิทยากรภายใน",
+                "หัวข้อวิทยากร"
+            ];
+
+            const rows = dataset.map(s => [
+                `"${s.timestamp || ''}"`,
+                `"${(s.workLocation || '').replace(/"/g, '""')}"`,
+                `"${(s.jobNature || '').replace(/"/g, '""')}"`,
+                `"${(s.section2Topics || []).join('; ').replace(/"/g, '""')}"`,
+                `"${(s.section3Priority || []).join('; ').replace(/"/g, '""')}"`,
+                `"${(s.workProblems || []).join('; ').replace(/"/g, '""')}"`,
+                `"${(s.suggestionTopic || '').replace(/"/g, '""')}"`,
+                `"${(s.suggestionImprovement || '').replace(/"/g, '""')}"`,
+                `"${(s.trainerReadiness || '').replace(/"/g, '""')}"`,
+                `"${(s.trainerTopic || '').replace(/"/g, '""')}"`
+            ]);
+
+            const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `RoyalPark_Training_Needs_Survey_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

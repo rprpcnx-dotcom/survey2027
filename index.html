@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button type="button" onclick="openAdminModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl transition font-medium flex items-center shadow-md hover:shadow-lg">
+                    <button onclick="openAdminModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl transition font-medium flex items-center shadow-md hover:shadow-lg">
                         <i class="fa-solid fa-chart-pie mr-2"></i> ผลการสำรวจ & แดชบอร์ด
                     </button>
                 </div>
@@ -148,7 +148,7 @@
                         1.1 จุดปฏิบัติงาน <span class="text-red-500">*</span> <span class="text-xs font-normal text-slate-500">(เลือก 1 ข้อ)</span>
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workLocationContainer">
-                        <!-- Populated dynamically -->
+                        <!-- Options filled dynamically or static -->
                     </div>
                     <div id="workLocationOtherContainer" class="mt-3 hidden">
                         <input type="text" id="workLocationOther" placeholder="โปรดระบุจุดปฏิบัติงานอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
@@ -203,9 +203,9 @@
                     * โปรดเลือกหัวข้อที่ท่านต้องการเข้ารับการอบรม <strong class="text-slate-700">(สามารถเลือกได้ทุกหมวด หมวดละ 1 ตัวเลือก)</strong>
                 </p>
 
-                <!-- Categorized Radios -->
+                <!-- Categorized Checkboxes -->
                 <div class="space-y-6" id="section2Categories">
-                    <!-- Categories generated dynamically -->
+                    <!-- Categories will be generated dynamically -->
                 </div>
             </div>
 
@@ -227,7 +227,7 @@
                 </p>
 
                 <div id="section3Container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                    <!-- Populated dynamically -->
+                    <!-- Populated dynamically based on section 2 or all options -->
                 </div>
             </div>
 
@@ -246,7 +246,7 @@
                 <p class="text-xs text-slate-500 mb-4">จากประสบการณ์การปฏิบัติงานของท่าน พบปัญหาด้านใดบ่อยที่สุด</p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="workProblemsContainer">
-                    <!-- Work Problems dynamically populated -->
+                    <!-- Work Problems -->
                 </div>
                 <div id="workProblemOtherContainer" class="mt-3 hidden">
                     <input type="text" id="workProblemOther" placeholder="โปรดระบุปัญหาอื่น ๆ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500 text-sm">
@@ -262,14 +262,14 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label for="suggestionTopic" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             5.1 หัวข้ออบรมที่ท่านต้องการเพิ่มเติม
                         </label>
                         <textarea id="suggestionTopic" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุหัวข้อที่ต้องการอบรมเพิ่มเติม..."></textarea>
                     </div>
 
                     <div>
-                        <label for="suggestionImprovement" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             5.2 ข้อเสนอแนะในการพัฒนาการให้บริการของอุทยานหลวงราชพฤกษ์
                         </label>
                         <textarea id="suggestionImprovement" rows="3" class="w-full p-3.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500" placeholder="ระบุข้อเสนอแนะในการพัฒนาการให้บริการ..."></textarea>
@@ -302,16 +302,9 @@
                             สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม
                         </label>
                     </div>
-                    <div>
-                        <input type="radio" id="trainer_3" name="trainerReadiness" value="ยังไม่สนใจในขณะนี้" class="hidden radio-custom" onchange="toggleTrainerTopic(false)">
-                        <label for="trainer_3" class="flex items-center p-3.5 text-sm rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
-                            <span class="w-4 h-4 rounded-full border border-slate-300 mr-3 flex items-center justify-center text-xs"></span>
-                            ยังไม่สนใจในขณะนี้
-                        </label>
-                    </div>
 
                     <div id="trainerTopicContainer" class="mt-4 pt-3 border-t border-slate-100 hidden">
-                        <label for="trainerTopic" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             หากมีความสนใจ โปรดระบุหัวข้อที่ท่านมีความเชี่ยวชาญและสามารถถ่ายทอดได้:
                         </label>
                         <input type="text" id="trainerTopic" placeholder="เช่น การบริการลูกค้าชาวต่างชาติ, การใช้อุปกรณ์นำชม, การดูแลสวน..." class="w-full p-3 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rpark-500 focus:border-rpark-500">
@@ -358,20 +351,20 @@
                 <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
                     <!-- Tab Toggle Buttons -->
                     <div class="bg-slate-200/80 p-1 rounded-xl flex space-x-1 text-xs font-medium">
-                        <button type="button" id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold">
+                        <button id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3.5 py-1.5 rounded-lg transition bg-white text-rpark-800 shadow-sm font-semibold">
                             <i class="fa-solid fa-chart-pie mr-1.5"></i> แดชบอร์ดสรุปผล
                         </button>
-                        <button type="button" id="tabBtnTable" onclick="switchAdminTab('table')" class="px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900">
+                        <button id="tabBtnTable" onclick="switchAdminTab('table')" class="px-3.5 py-1.5 rounded-lg transition text-slate-600 hover:text-slate-900">
                             <i class="fa-solid fa-table-list mr-1.5"></i> ตารางข้อมูล
                         </button>
                     </div>
 
                     <div class="flex items-center space-x-2">
-                        <button type="button" onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center space-x-1 shadow">
+                        <button onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center space-x-1 shadow">
                             <i class="fa-solid fa-file-excel"></i>
                             <span class="hidden sm:inline">ดาวน์โหลด CSV</span>
                         </button>
-                        <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1 leading-none">&times;</button>
+                        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1 leading-none">&times;</button>
                     </div>
                 </div>
             </div>
@@ -504,12 +497,11 @@
                 <span id="demoDataBadge" class="hidden text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
                     <i class="fa-solid fa-flask mr-1"></i> แสดงข้อมูลตัวอย่างสาธิต (เมื่อยังไม่มีผู้ตอบจริง)
                 </span>
-                <button type="button" onclick="clearLocalData()" class="text-red-500 hover:underline ml-auto">ล้างข้อมูลสำรองในเครื่อง</button>
+                <button onclick="clearLocalData()" class="text-red-500 hover:underline ml-auto">ล้างข้อมูลสำรองในเครื่อง</button>
             </div>
         </div>
     </div>
 
-    <!-- Application JavaScript Code -->
     <script>
         // Form Data Constants
         const WORK_LOCATIONS = [
@@ -555,7 +547,7 @@
             ],
             "ง. ด้านภาษา": [
                 "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ",
-                "ภาษาจีนเบื้องต้น"
+                "ภาษาจีนเบื้องต้น",
             ],
             "จ. ด้านเทคโนโลยี": [
                 "การใช้ AI ช่วยในการทำงาน",
@@ -590,8 +582,8 @@
                 timestamp: "31/7/2026, 09:15:20",
                 workLocation: "อาคารบริการข้อมูลและอำนวยความสะดวก (GECC)",
                 jobNature: "ให้บริการผู้เข้าชมโดยตรง",
-                section2Topics: ["การสร้างจิตบริการ (Service Mind)", "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ", "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การแก้ไขปัญหาเฉพาะหน้า", "การทำงานเป็นทีม"],
-                section3Priority: ["ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การสร้างจิตบริการ (Service Mind)", "การแก้ไขปัญหาเฉพาะหน้า"],
+                section2Topics: ["การสร้างจิตบริการ (Service Mind)", "การให้ข้อมูลและตอบคำถามอย่างมืออาชีพ", "ภาษาอังกฤษเพื่อการให้บริการ", "การแก้ไขปัญหาเฉพาะหน้า", "การทำงานเป็นทีม"],
+                section3Priority: ["ภาษาอังกฤษเพื่อการให้บริการ", "การสร้างจิตบริการ (Service Mind)", "การแก้ไขปัญหาเฉพาะหน้า"],
                 workProblems: ["การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ", "นักท่องเที่ยวสอบถามข้อมูลจำนวนมาก"],
                 trainerReadiness: "มีความสนใจเป็นวิทยากรหรือผู้ถ่ายทอดความรู้ในหัวข้อที่ตนเองเชี่ยวชาญ",
                 trainerTopic: "การให้ข้อมูลสถานที่ท่องเที่ยวและการต้อนรับชาวต่างชาติ"
@@ -600,7 +592,7 @@
                 timestamp: "31/7/2026, 10:02:11",
                 workLocation: "อาคารรถไฟฟ้าชมสวน / ขณะขับรถนำชม",
                 jobNature: "ให้บริการผู้เข้าชมโดยตรง",
-                section2Topics: ["บุคลิกภาพในการให้บริการ", "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "ภาษาอังกฤษเพื่อการให้ข้อมูลและบริการ", "การแก้ไขปัญหาเฉพาะหน้า"],
+                section2Topics: ["บุคลิกภาพในการให้บริการ", "การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "ภาษาอังกฤษเพื่อการให้บริการ", "การแก้ไขปัญหาเฉพาะหน้า"],
                 section3Priority: ["การเป็นผู้แนะนำแหล่งเรียนรู้ (Interpretation)", "การแก้ไขปัญหาเฉพาะหน้า", "บุคลิกภาพในการให้บริการ"],
                 workProblems: ["การใช้อุปกรณ์หรือระบบในการให้บริการ", "การจัดการนักท่องเที่ยวในช่วงที่มีผู้ใช้บริการจำนวนมาก"],
                 trainerReadiness: "สนใจ หากได้รับการพัฒนา/ฝึกอบรมเพิ่มเติม",
@@ -613,7 +605,7 @@
                 section2Topics: ["การรับข้อร้องเรียน", "การสื่อสารเมื่อเกิดเหตุไม่คาดคิด", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
                 section3Priority: ["การรับข้อร้องเรียน", "ภาษาจีนเบื้องต้น", "การควบคุมอารมณ์ในการปฏิบัติงาน"],
                 workProblems: ["การรับเรื่องร้องเรียน", "การสื่อสารกับนักท่องเที่ยวชาวต่างชาติ"],
-                trainerReadiness: "ยังไม่สนใจในขณะนี้",
+                trainerReadiness: "ไม่ได้ระบุ",
                 trainerTopic: ""
             }
         ];
@@ -625,7 +617,7 @@
         let localSubmissions = [];
         let chartInstances = {};
 
-        // นำ Web App URL ที่ได้จาก Google Apps Script มาใส่ตรงนี้เพื่อส่งข้อมูลลง Google Sheets
+        // วาง Web App URL ที่ได้จากการ Deploy Google Apps Script ที่นี่
         const GOOGLE_SCRIPT_URL = ""; 
 
         // Initialization
@@ -746,7 +738,23 @@
             document.getElementById('section3Counter').innerText = selectedSection3Count;
         }
 
-        // Render Section 4 Work Problems
+        // Render Section 4 Training Formats
+        function renderTrainingFormats() {
+            const container = document.getElementById('trainingFormatContainer');
+            container.innerHTML = TRAINING_FORMATS.map((fmt, idx) => `
+                <div>
+                    <input type="checkbox" id="fmt_${idx}" value="${fmt}" class="hidden checkbox-custom sec4-checkbox">
+                    <label for="fmt_${idx}" class="flex items-center p-3 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition h-full">
+                        <span class="w-4 h-4 rounded border border-slate-300 mr-2 flex-shrink-0 flex items-center justify-center text-[10px] text-rpark-600">
+                            <i class="fa-solid fa-check hidden"></i>
+                        </span>
+                        <span>${fmt}</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        // Render Section 5 Work Problems
         function renderWorkProblems() {
             const container = document.getElementById('workProblemsContainer');
             container.innerHTML = WORK_PROBLEMS.map((prob, idx) => `
@@ -1105,7 +1113,34 @@
             });
         }
 
-        // Chart 3: Horizontal Bar - Section 4 Work Problems
+        // Chart 3: Doughnut Chart - Section 4 Training Formats
+        function buildChartSection4(countsObj) {
+            const ctx = document.getElementById('chartSection4').getContext('2d');
+            if (chartInstances.sec4) chartInstances.sec4.destroy();
+
+            const labels = Object.keys(countsObj);
+            const values = Object.values(countsObj);
+
+            chartInstances.sec4 = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#64748b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // Chart 4: Horizontal Bar - Section 5 Work Problems
         function buildChartSection5(countsObj) {
             const ctx = document.getElementById('chartSection5').getContext('2d');
             if (chartInstances.sec5) chartInstances.sec5.destroy();
@@ -1137,7 +1172,7 @@
             });
         }
 
-        // Chart 4: Pie Chart - Section 6 Internal Trainer
+        // Chart 5: Pie Chart - Section 7 Internal Trainer
         function buildChartSection7(data) {
             const ctx = document.getElementById('chartSection7').getContext('2d');
             if (chartInstances.sec7) chartInstances.sec7.destroy();
@@ -1145,7 +1180,7 @@
             const categories = {
                 "มีความสนใจ": 0,
                 "สนใจหากได้รับการพัฒนา": 0,
-                "ยังไม่สนใจ / ไม่เลือก": 0
+                "ไม่ได้ระบุ / ไม่เลือก": 0
             };
 
             data.forEach(sub => {
@@ -1155,7 +1190,7 @@
                 } else if (text.includes("ได้รับการพัฒนา")) {
                     categories["สนใจหากได้รับการพัฒนา"]++;
                 } else {
-                    categories["ยังไม่สนใจ / ไม่เลือก"]++;
+                    categories["ไม่ได้ระบุ / ไม่เลือก"]++;
                 }
             });
 
